@@ -1,27 +1,38 @@
 <% include ../partials/header %>
 <div class="container">
-    <h1 class="text-center">New Campground</h1>
+  <h1 class="text-center">New Campground</h1>
 
-    <!-- definiamo un tag row perché vogliamo USARE IL GRID SYSTEM IN MODO CHE IL FORM VENGA MOSTRATO
+  <!-- definiamo un tag row perché vogliamo USARE IL GRID SYSTEM IN MODO CHE IL FORM VENGA MOSTRATO
         OCCUPANDO TUTTE LE 12 COLONNE DELLA GRIGLIA E QUINDI OCCUPANDO TUTTA LA LARGHEZZA DELLO SCHERMO ANCHE
         QUANDO E' VISUALIZZATO SU DISPOSTIVI MOBILI IN QUESTO MODO E' RESPONSIVO
     -->
-    <div class="row">
-        <div style="width: 30%; margin: 25px auto;">
-            <form action="/campgrounds" method="POST">
-                <!-- definiamo ogni campo del form (compreso il bottone )
+  <div class="row">
+    <div style="width: 30%; margin: 25px auto;">
+      <form action="/campgrounds" method="POST" enctype="multipart/form-data">
+        <!-- definiamo ogni campo del form (compreso il bottone )
         dentro un div con classe form-group PER DARGLI UNA SPAZIATURA 
         E DISTANZIARLO DAL PRECEDENTE E DAL SUCCESSIVO -->
-                <div class="form-group">
-                    <input class="form-control" type="text" name="name" placeholder="name">
+        <div class="form-group">
+          <input
+            class="form-control"
+            type="text"
+            name="name"
+            placeholder="name"
+            value="<% if(name) { %><%= name %><% } %>"
+          />
+        </div>
+        <div class="form-group">
+          <input
+            class="form-control"
+            type="file"
+            name="images"
+            accept="image/*"
+            multiple
+          />
+        </div>
 
-                </div>
-                <div class="form-group">
-                    <input class="form-control" type="text" name="image" placeholder="image_url">
-                </div>
-
-                <div class="form-group">
-                    <!-- IL PREZZO PREZZO SARA' UN INPUT CON type="number", QUESTO CI PERMETTE DI INSERIRE SOLO NUMERI
+        <div class="form-group">
+          <!-- IL PREZZO PREZZO SARA' UN INPUT CON type="number", QUESTO CI PERMETTE DI INSERIRE SOLO NUMERI
                          NON STRINGHE IN QUESTO MODO SIAMO SICURI CHE IL PREZZO INSERITO DAL UTENTE SIA UN NUMERO E NON 
                          UNA STRINGA 
                          DI FIANCO AL ELEMENTO HTML input CI SONO DUE FRECCETTE, UNA RIVOLTA VERSO IL BASSO E L'ALTRA
@@ -30,20 +41,38 @@
                          A QUESTO IL VALORE PASSATO A min SARA' QUELLO DI DEFAULT, A step PASSIAMO DI QUANTO VOGLIAMO AUMENTARE
                          O DIMINUIRE IL PREZZO INSERITO QUANDO PREMIAMO UNA DELLE DUE FRECCETTE 
                     -->
-                    <input class="form-control" type="number" name="price" placeholder="price" min="0.01" step="100">
-                </div>
-                <div class="form-group">
-                    <textarea class="form-control" name="description" id="" cols="30" rows="10"
-                        placeholder="description ... "></textarea>
-                </div>
-                <div class="form-group">
-                    <button class="btn btn-lg btn-primary btn-block" type="submit">CREATE</button>
-                </div>
-            </form>
-
-            <a href="/campgrounds">go back</a>
+          <input
+            class="form-control"
+            type="number"
+            name="price"
+            placeholder="price"
+            min="0.01"
+            step="100"
+            value="<% if(price) { %><%= price %><% } %>"
+          />
         </div>
+        <div class="form-group">
+          <textarea
+            class="form-control"
+            name="description"
+            id=""
+            cols="30"
+            rows="10"
+            placeholder="description ... "
+          >
+<% if(description) { %><%= description %><% } %></textarea
+          >
+        </div>
+        <div class="form-group">
+          <button class="btn btn-lg btn-primary btn-block" type="submit">
+            CREATE
+          </button>
+        </div>
+      </form>
+
+      <a href="/campgrounds">go back</a>
     </div>
+  </div>
 </div>
 
 <% include ../partials/footer %>

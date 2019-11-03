@@ -1,13 +1,29 @@
 // PACKAGES
 const express = require("express"),
-  router = express.Router();
+  router = express.Router(),
+  multer = require("multer"),
+  cloudinary = require("cloudinary");
+
+// MULTER CONFIG
+const upload = multer({ dest: "uploads/" });
+// CLOUDINARY CONFIG
+cloudinary.config({
+  cloud_name: "dmxuerbxv",
+  api_key: "529692727915557",
+  api_secret: process.env.CLOUDINARY_SECRET
+});
 
 // MODELS
 const Campground = require("../models/campground"),
   Comment = require("../models/comment");
 
 // MIDDLEWARE
-const { checkUserOwnership } = require("../middleware/modelsMiddleware"),
+const {
+    checkUserOwnership,
+    validateImgs,
+    destroyFormCookies,
+    deleteImages
+  } = require("../middleware/modelsMiddleware"),
   { isLoggedIn } = require("../middleware/authMiddleware"),
   { asyncErrorHandler } = require("../middleware");
 
@@ -21,7 +37,7 @@ router.get(
 );
 
 // NEW
-router.get("/new", isLoggedIn, (req, res, next) =>
+router.get("/new", destroyFormCookies, isLoggedIn, (req, res, next) =>
   res.render("campgrounds/new")
 );
 
@@ -43,6 +59,8 @@ router.get(
 router.post(
   "/",
   isLoggedIn,
+  upload.array("images", 4),
+  validateImgs,
   asyncErrorHandler(async (req, res, next) => {
     let { name, image, description, price } = req.body;
     let newCampGround = {
@@ -52,16 +70,30 @@ router.post(
       price,
       author: { username: req.user.username, id: req.user._id }
     };
+    newCampGround.images = [];
+    for (const file of req.files) {
+      // upload
+      let img = await cloudinary.v2.uploader.upload(file.path);
+      // associazione
+      newCampGround.images.push({
+        url: img.secure_url,
+        public_id: img.public_id
+      });
+    }
+    // creiamo il campground
     let newCamp = await Campground.create(newCampGround);
     req.flash("success", newCamp.name + " successfully created");
     res.redirect("/campgrounds");
-  })
+    next();
+  }),
+  deleteImages
 );
 
 // EDIT
 router.get(
   "/:id/edit",
   checkUserOwnership,
+  destroyFormCookies,
   asyncErrorHandler(async (req, res, next) => {
     let campground = await Campground.findById(req.params.id);
     if (campground) res.render("campgrounds/edit", { campground });
@@ -76,6 +108,8 @@ router.get(
 router.put(
   "/:id",
   checkUserOwnership,
+  upload.array("images", 4),
+  validateImgs,
   asyncErrorHandler(async (req, res, next) => {
     await Campground.findByIdAndUpdate(req.params.id, req.body.campground);
     req.flash("success", "Campground successfully updated");
@@ -89,9 +123,14 @@ router.delete(
   checkUserOwnership,
   asyncErrorHandler(async (req, res, next) => {
     let campground = await Campground.findByIdAndRemove(req.params.id);
-    campground.comments.forEach(
-      async id => await Comment.findByIdAndRemove(id)
-    );
+    // eliminiamo i commenti del campground
+    for (const id of campground.comments) {
+      await Comment.findByIdAndRemove(id);
+    }
+    // eliminiamo le foto del campground
+    for (const img of campground.images) {
+      await cloudinary.v2.uploader.destroy(img.public_id);
+    }
     req.flash("success", "campground successfully deleted");
     res.redirect("/campgrounds");
   })

@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const campgroudSchema = new mongoose.Schema({
   name: String,
-  image: String,
+  images: [{ url: String, public_id: String }],
   price: String,
   description: String,
   author: {

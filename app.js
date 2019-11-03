@@ -9,6 +9,7 @@ const express = require("express"),
   passport = require("passport"),
   LocalStrategy = require("passport-local"),
   expressSession = require("express-session"),
+  cookieParser = require("cookie-parser"),
   methodOverride = require("method-override");
 
 // MODELS
@@ -32,6 +33,7 @@ app.use(
   })
 );
 app.use(flash());
+app.use(cookieParser());
 
 // DB CONNECTION
 mongoose.connect("mongodb://localhost:27017/YelpCamp_img_upload", {
