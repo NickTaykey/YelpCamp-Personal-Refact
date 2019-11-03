@@ -62,10 +62,9 @@ router.post(
   upload.array("images", 4),
   validateImgs,
   asyncErrorHandler(async (req, res, next) => {
-    let { name, image, description, price } = req.body;
+    let { name, description, price } = req.body;
     let newCampGround = {
       name,
-      image,
       description,
       price,
       author: { username: req.user.username, id: req.user._id }
