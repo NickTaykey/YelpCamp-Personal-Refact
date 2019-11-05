@@ -1,0 +1,4 @@
+div.row.text-center {
+  display: flex;
+  flex-wrap: wrap;
+}

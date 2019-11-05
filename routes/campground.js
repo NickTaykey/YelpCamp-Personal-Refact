@@ -112,10 +112,11 @@ router.put(
   asyncErrorHandler(async (req, res, next) => {
     // selezionare il campground
     let campground = await Campground.findById(req.params.id),
-      bodyCampground = req.body.campground;
-    if (req.body.deleteImages) {
+      bodyCampground = req.body.campground,
+      deleteImages = req.body.deleteImages;
+    if (deleteImages) {
       // eliminare le immagini dal cloud e dal db
-      for (const public_id of req.body.deleteImages) {
+      for (const public_id of deleteImages) {
         // cloud
         await cloudinary.v2.uploader.destroy(public_id);
         // db

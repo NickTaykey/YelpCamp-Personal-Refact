@@ -1,29 +1,34 @@
 <% include ../partials/header %>
 <div class="container">
-    <h1 class="text-center">Comment <%= campground.name %></h1>
+  <h1 class="text-center">Comment <%= campground.name %></h1>
 
-    <!-- definiamo un tag row perché vogliamo USARE IL GRID SYSTEM IN MODO CHE IL FORM VENGA MOSTRATO
+  <!-- definiamo un tag row perché vogliamo USARE IL GRID SYSTEM IN MODO CHE IL FORM VENGA MOSTRATO
         OCCUPANDO TUTTE LE 12 COLONNE DELLA GRIGLIA E QUINDI OCCUPANDO TUTTA LA LARGHEZZA DELLO SCHERMO ANCHE
         QUANDO E' VISUALIZZATO SU DISPOSTIVI MOBILI IN QUESTO MODO E' RESPONSIVO
     -->
-    <div class="row">
-        <div style="width: 30%; margin: 25px auto;">
-            <form action="/campgrounds/<%= campground._id %>/comments" method="POST">
-                <!-- definiamo ogni campo del form (compreso il bottone )
+  <div class="row form-row">
+    <form action="/campgrounds/<%= campground._id %>/comments" method="POST">
+      <!-- definiamo ogni campo del form (compreso il bottone )
         dentro un div con classe form-group PER DARGLI UNA SPAZIATURA 
         E DISTANZIARLO DAL PRECEDENTE E DAL SUCCESSIVO -->
-                <div class="form-group">
-                    <textarea name="comment[text]" cols="30" rows="10" class="form-control"
-                        placeholder="your comment"></textarea>
-                </div>
-                <div class="form-group">
-                    <button class="btn btn-lg btn-primary btn-block" type="submit">CREATE</button>
-                </div>
-            </form>
+      <div class="form-group">
+        <textarea
+          name="comment[text]"
+          cols="30"
+          rows="10"
+          class="form-control"
+          placeholder="your comment"
+        ></textarea>
+      </div>
+      <div class="form-group">
+        <button class="btn btn-lg btn-primary btn-block" type="submit">
+          CREATE
+        </button>
+      </div>
+    </form>
 
-            <a href="/campgrounds">go back</a>
-        </div>
-    </div>
+    <a href="/campgrounds">go back</a>
+  </div>
 </div>
 
 <% include ../partials/footer %>
