@@ -48,14 +48,14 @@ let middlewareOBJ = {
       }
       // se tutti i file sono validi invochiamo next
       next();
-    } else {
+    } else if (req.method !== "PUT") {
       // settaggio dei cookie
       res.cookie("name", req.body.name);
       res.cookie("description", req.body.description);
       res.cookie("price", req.body.price);
       req.flash("error", "You have to provvide at least one image! ");
       return res.redirect("back");
-    }
+    } else next();
   },
   destroyFormCookies(req, res, next) {
     res.clearCookie("name");

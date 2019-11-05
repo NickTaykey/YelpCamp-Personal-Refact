@@ -1,0 +1,10 @@
+.image {
+  width: 275px;
+  margin-top: 15px;
+  margin-right: 45px;
+}
+input[type="checkbox"] {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+}

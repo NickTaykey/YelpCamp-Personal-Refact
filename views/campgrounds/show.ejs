@@ -37,14 +37,8 @@
 
           <!-- Wrapper for slides -->
           <div class="carousel-inner" role="listbox">
-            <div class="item active">
-              <img
-                src="<%= campground.images[0].url %>"
-                alt="image of <%= campground.name %>"
-              />
-            </div>
-            <% for(var i = 1; i<campground.images.length; i++){ %>
-              <div class="item">
+            <% for(var i = 0; i<campground.images.length; i++){ %>
+              <div class="item <% if(i===0){ %>active<% } %>">
                 <img src="<%= campground.images[i].url %>" alt="image of <%= campground.name %>" />
               </div>
             <% } %>

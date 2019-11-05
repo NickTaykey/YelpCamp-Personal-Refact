@@ -110,10 +110,44 @@ router.put(
   upload.array("images", 4),
   validateImgs,
   asyncErrorHandler(async (req, res, next) => {
-    await Campground.findByIdAndUpdate(req.params.id, req.body.campground);
+    // selezionare il campground
+    let campground = await Campground.findById(req.params.id),
+      bodyCampground = req.body.campground;
+    if (req.body.deleteImages) {
+      // eliminare le immagini dal cloud e dal db
+      for (const public_id of req.body.deleteImages) {
+        // cloud
+        await cloudinary.v2.uploader.destroy(public_id);
+        // db
+        let i = 0;
+        for (const img of campground.images) {
+          if (img.public_id === public_id) {
+            campground.images.splice(i, 1);
+            break;
+          }
+          i++;
+        }
+      }
+    }
+    // uploadare le nuove immagini
+    for (const img of req.files) {
+      let cloudImg = await cloudinary.v2.uploader.upload(img.path);
+      campground.images.push({
+        url: cloudImg.secure_url,
+        public_id: cloudImg.public_id
+      });
+    }
+    // modificare il campground
+    campground.name = bodyCampground.name;
+    campground.description = bodyCampground.description;
+    campground.price = bodyCampground.price;
+    // salvare
+    await campground.save();
     req.flash("success", "Campground successfully updated");
     res.redirect(`/campgrounds/${req.params.id}`);
-  })
+    next();
+  }),
+  deleteImages
 );
 
 // DESTROY
