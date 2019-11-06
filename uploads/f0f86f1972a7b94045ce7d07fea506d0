@@ -1,0 +1,47 @@
+<% include ../partials/header %>
+    <%# IMMAGINE DEL UTENTE %>
+    <div class="row">
+        <div class="col-12 col-lg-6">
+            <% var defaultImage = "https://vignette.wikia.nocookie.net/caramella-girls/images/9/99/Blankpfp.png/revision/latest?cb=20190122015011"; %>
+            <img src="<% if(user.image){ %>user.image<% } else { %><%= defaultImage %><% } %>" alt="" class="img-fluid profile-img">
+        </div>
+        <div class="col-12 col-lg-6">
+            <h1 class="display-4 m-0 text-center text-lg-left <% if(!user.bio){ %>no-bio-margin<% } else { %>bio-margin<% } %>"><%= user.username %></h1>
+            <h6 class="my-4 ml-1 text-center text-lg-left"><%= user.email %></h6>
+            <% if(user.bio){ %>
+                <div class="ml-1">
+                    <strong class="d-block my-3">Bio: </strong>
+                    <p>
+                        <%- user.bio %>
+                    </p>
+                </div>
+            <% } %>
+            <div class="row my-4">
+                <div class="col-6">
+                    <h3 class="text-center m-0">
+                        <span class="d-inline-block mr-2"><%= likes.Likes %></span> Likes
+                    </h3>
+                </div>
+                <div class="col-6">
+                    <h3 class="text-center m-0">
+                        <span class="d-inline-block mr-2"><%= likes.Dislikes %></span> Dislikes
+                    </h3>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mb-5 mt-lg-5">
+        <div class="col-12 col-lg-6 mt-4">
+            <h3 class="w-100 mx-auto my-0 btn-light p-3 rounded text-center">Quesions: <%= user.questions.length %></h3>
+        </div>
+        <div class="col-12 col-lg-6 mt-4">
+            <h3 class="w-100 mx-auto my-0 btn-light p-3 rounded text-center">Answers: <%= user.answers.length %></h3>
+        </div>
+        <div class="col-12 col-lg-6 mt-4">
+            <h3 class="w-100 mx-auto my-0 btn-light p-3 rounded text-center">Liked Questions: <%= user.questionsLiked.length %></h3>
+        </div>
+        <div class="col-12 col-lg-6 mt-4">
+            <h3 class="w-100 mx-auto my-0 btn-light p-3 rounded text-center">Liked Answers: <%= user.answersLiked.length %></h3>
+        </div>
+    </div>
+<% include ../partials/footer %>

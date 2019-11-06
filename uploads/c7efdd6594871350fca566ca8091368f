@@ -1,0 +1,8 @@
+<header class="text-center">
+    <button class="d-inline-block mb-1 mr-2 btn btn-light btn-sm back" type="button">
+        <span class="d-inline-block m-0 mb-3 mr-3">
+        <i class="fas fa-arrow-left"></i>
+        </span> Back
+    </button>
+    <h2 class="d-inline-block m-0">Edit Your Answer</h2>
+</header>

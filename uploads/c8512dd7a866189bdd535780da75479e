@@ -1,0 +1,20 @@
+body{
+    padding-top: 70px;
+}
+
+
+@media screen and (min-width: 1024px){
+    h1.display-6{
+        margin-top: 9rem;
+    }
+    h1.rule{
+        margin-top: 1rem!important;
+    }
+}
+
+p.text-justify{
+    font-size: 1.6rem;
+}
+
+
+
