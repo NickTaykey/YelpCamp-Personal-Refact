@@ -6,11 +6,13 @@ const Campground = require("../models/campground"),
   Comment = require("../models/comment");
 
 let isLoggedIn = (req, res) => {
-  if (req.isAuthenticated()) return true;
-  req.flash("error", "You need to be logged in to do that");
-  res.redirect("/login");
-};
-
+    if (req.isAuthenticated()) return true;
+    req.flash("error", "You need to be logged in to do that");
+    res.redirect("/login");
+  },
+  deleteImages = (req, res, next) => {
+    for (const file of req.files) fs.unlinkSync(file.path);
+  };
 let middlewareOBJ = {
   async checkUserOwnership(req, res, next) {
     if (isLoggedIn(req, res)) {
@@ -47,6 +49,8 @@ let middlewareOBJ = {
               i++;
             }
           }
+          // cancellazione dei file uploadati
+          deleteImages(req, res, next);
           // redirect con flash message
           req.flash(
             "error",
@@ -84,10 +88,6 @@ let middlewareOBJ = {
     res.locals.price = req.cookies.price;
     next();
   },
-  deleteImages(req, res, next) {
-    for (const file of req.files) {
-      fs.unlinkSync(file.path);
-    }
-  }
+  deleteImages
 };
 module.exports = middlewareOBJ;
