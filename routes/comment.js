@@ -8,10 +8,11 @@ const Campground = require("../models/campground"),
 
 // MIDDLEWARE
 const {
-    checkCommentOwnership,
-    validateComment
-  } = require("../middleware/modelsMiddleware"),
-  { isLoggedIn } = require("../middleware/authMiddleware"),
+  checkCommentOwnership,
+  checkCampground,
+  validateComment,
+  isLoggedIn
+} = require("../middleware/modelsMiddleware"),
   { asyncErrorHandler } = require("../middleware");
 
 // ========================
@@ -22,13 +23,10 @@ const {
 Router.get(
   "/new",
   isLoggedIn,
+  checkCampground,
   asyncErrorHandler(async (req, res, next) => {
     const campground = await Campground.findById(req.params.id);
-    if (campground) res.render("comments/new", { campground });
-    else {
-      req.flash("error", "campground not found");
-      res.redirect("/campgrounds");
-    }
+    res.render("comments/new", { campground });
   })
 );
 
@@ -36,81 +34,58 @@ Router.get(
 Router.post(
   "/",
   isLoggedIn,
+  checkCampground,
   validateComment,
   asyncErrorHandler(async (req, res, next) => {
-    let campground = await Campground.findById(req.params.id);
-    if (campground) {
-      let comment = await Comment.create(req.body.comment);
-      comment.author.id = req.user._id;
-      comment.author.username = req.user.username;
-      await comment.save();
-      campground.comments.push(comment);
-      await campground.save();
-      req.flash("success", "comment successfully added");
-      res.redirect("/campgrounds/" + req.params.id);
-    } else {
-      req.flash("error", "campground not found");
-      res.redirect("/campgrounds");
-    }
+    let campground = await Campground.findById(req.params.id),
+      comment = await Comment.create(req.body.comment);
+    comment.author.id = req.user._id;
+    comment.author.username = req.user.username;
+    await comment.save();
+    campground.comments.push(comment);
+    await campground.save();
+    req.flash("success", "comment successfully added");
+    res.redirect("/campgrounds/" + req.params.id);
   })
 );
 
 // EDIT
 Router.get(
   "/:comment_id/edit",
+  checkCampground,
   checkCommentOwnership,
   asyncErrorHandler(async (req, res, next) => {
-    let campground = await Campground.findById(req.params.id);
-    if (campground) {
-      let comment = await Comment.findById(req.params.comment_id);
-      if (comment) {
-        res.render("comments/edit", {
-          campground_id: req.params.id,
-          comment
-        });
-      } else {
-        req.flash("error", "comment not found");
-        res.redirect("back");
-      }
-    } else {
-      req.flash("error", "campground not found");
-      res.redirect("/campgrounds");
-    }
+    let comment = await Comment.findById(req.params.comment_id);
+    res.render("comments/edit", {
+      campground_id: req.params.id,
+      comment
+    });
   })
 );
 
 // UPDATE
 Router.put(
   "/:comment_id",
+  checkCampground,
   checkCommentOwnership,
   validateComment,
   asyncErrorHandler(async (req, res, next) => {
-    let campground = await Campground.findById(req.params.id);
-    if (campground) {
-      await Comment.findByIdAndUpdate(req.params.comment_id, req.body.comment);
-      req.flash("success", "comment successfully updated");
-      res.redirect("/campgrounds/" + req.params.id);
-    } else {
-      req.flash("error", "campground not found");
-      res.redirect("/campgrounds");
-    }
+    await Comment.findByIdAndUpdate(req.params.comment_id, req.body.comment);
+    req.flash("success", "comment successfully updated");
+    res.redirect("/campgrounds/" + req.params.id);
+
   })
 );
 
 // DESTROY
 Router.delete(
   "/:comment_id",
+  checkCampground,
   checkCommentOwnership,
   asyncErrorHandler(async (req, res, next) => {
-    let campground = await Campground.findById(req.params.id);
-    if (campground) {
-      await Comment.findByIdAndRemove(req.params.comment_id);
-      req.flash("success", "comment successfully deleted");
-      res.redirect(`/campgrounds/${req.params.id}`);
-    } else {
-      req.flash("error", "campground not found");
-      res.redirect("/campgrounds");
-    }
+    await Comment.findByIdAndRemove(req.params.comment_id);
+    req.flash("success", "comment successfully deleted");
+    res.redirect(`/campgrounds/${req.params.id}`);
   })
 );
 

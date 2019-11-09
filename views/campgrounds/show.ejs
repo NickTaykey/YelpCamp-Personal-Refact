@@ -2,14 +2,8 @@
 <div class="container">
   <div class="row">
     <div class="col-md-3">
-      <!-- lead FA RISALTARE DEL TESTO AUMENTANDONE LA GRANDEZZA E LA SPAZIATURA -->
       <p class="lead">YelpCamp</p>
-      <!--
-                     USIAMO UN LIST-GROUP PER MOSTRARE UNA LISTA IN CUI ELENCHIAMO TUTTE LE PAGINE CHE CONTENGONO
-                     info SUL CAMPGROUND IN QUESTIONE    
-                -->
       <div class="list-group">
-        <!-- active FA DIVENTARE L'ELEMENTO BLUE LO USIAMO PER SELEZIONARE L'OPZIONE DI DEFAULT -->
         <li class="list-group-item active">info 1</li>
         <li class="list-group-item">info 2</li>
         <li class="list-group-item">info 3</li>
@@ -18,146 +12,68 @@
     <div class="col-md-9">
       <div class="thumbnail">
         <% if(campground.images.length>1){ %>
-        <div
-          id="carousel-example-generic"
-          class="carousel slide"
-          data-ride="carousel"
-        >
-          <!-- Indicators -->
+        <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
           <ol class="carousel-indicators">
-            <li
-              data-target="#carousel-example-generic"
-              data-slide-to="0"
-              class="active"
-            ></li>
+            <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
             <% for(var i = 1; i<campground.images.length; i++){ %>
-              <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+            <li data-target="#carousel-example-generic" data-slide-to="1"></li>
             <% } %>
           </ol>
-
-          <!-- Wrapper for slides -->
           <div class="carousel-inner" role="listbox">
             <% for(var i = 0; i<campground.images.length; i++){ %>
-              <div class="item <% if(i===0){ %>active<% } %>">
-                <img src="<%= campground.images.length ? campground.images[i].url : '' %>" alt="image of <%= campground.name %>" />
-              </div>
+            <div class="item <% if(i===0){ %>active<% } %>">
+              <img src="<%= campground.images.length ? campground.images[i].url : '' %>"
+                alt="image of <%= campground.name %>" />
+            </div>
             <% } %>
           </div>
-
-          <!-- Controls -->
-          <a
-            class="left carousel-control"
-            href="#carousel-example-generic"
-            role="button"
-            data-slide="prev"
-          >
-            <span
-              class="glyphicon glyphicon-chevron-left"
-              aria-hidden="true"
-            ></span>
+          <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
             <span class="sr-only">Previous</span>
           </a>
-          <a
-            class="right carousel-control"
-            href="#carousel-example-generic"
-            role="button"
-            data-slide="next"
-          >
-            <span
-              class="glyphicon glyphicon-chevron-right"
-              aria-hidden="true"
-            ></span>
+          <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
             <span class="sr-only">Next</span>
           </a>
         </div>
         <% } else { %>
-          <img class="img-responsive" src="<%= campground.images.length ? campground.images[0].url : '' %>" alt="">
+        <img class="img-responsive" src="<%= campground.images.length ? campground.images[0].url : '' %>" alt="">
         <% } %>
-        <!-- PER AGGIUNGERE DEL CONTENUTO SOTTO L'IMMAGINE DEL THUMBNAIL -->
         <div class="caption">
-          <!-- 
-                            pull-right PER POSIZIONARE L'H4 A DESTRA DELLA caption NON USIAMO text-right PERCHE'
-                             IN QUESTO MODO L'H4 A DESTRA NON SAREBBE SULLA STESSA RIGA DI QUELLO A SINISTRA
-                             DATO CHE pull-right USA float PER SPOSTARE GLI ELEMENTI ALLORA I DUE H4 APPARIRANNO SULLA STESSA RIGA
-                        -->
           <h4 class="pull-right">
             <strong>$<%= campground.price %></strong>/night
           </h4>
           <h4><a href=""><%= campground.name %></a></h4>
           <p><%= campground.description %></p>
           <p>Submited By <em><%= campground.author.username %></em></p>
-
           <% if(currentUser && campground.author.id.equals(currentUser._id)){ %>
-
-          <!-- 
-                        MOSTRIAMO I PULSANTI PER AGGIORNARE O ELIMINARE UN CAMPGROUND SOLO SE L'UTENTE
-                        E' LOGGATO ED HA I PERMESSI PER MODIFICARE IL CAMPGROUND IN QUESTIONE
-                    -->
-
-          <!-- BOTTONE PER MODIFICARE IL CAMPGROUND -->
-          <a
-            href="/campgrounds/<%= campground._id %>/edit"
-            class="btn btn-xs btn-warning"
-            >Edit</a
-          >
-          <!-- 
-                            FORM CON IL PULSANTE PER ELIMINARE IL CAMPGROUND IN QUESTIONE FA UNA RICHIESTA (POST CHE VIENE
-                            TRASFORMATA IN DELETE DA method-override) ALLA ROUTE DESTROY
-                        -->
-          <form
-            class="delete_form"
-            action="/campgrounds/<%= campground._id %>?_method=DELETE"
-            method="POST"
-          >
+          <a href="/campgrounds/<%= campground._id %>/edit" class="btn btn-xs btn-warning">Edit</a>
+          <form class="delete_form" action="/campgrounds/<%= campground._id %>?_method=DELETE" method="POST">
             <button class="btn btn-xs btn-danger" type="submit">Delete</button>
           </form>
           <% } %>
         </div>
       </div>
-      <!-- VOGLAIMO CHE I COMMENTI APPAIANO IN BASSO IN UN ALTRA RIGA -->
       <div class="well">
-        <!-- LINK CHE PORTA AL FORM DI CREAZIONE DEI COMMENTI (dentro un p per dargli una spaziatura) -->
-        <!-- text-right per allineare del testo a destra (anche un link) -->
         <div class="text-right">
-          <a
-            class="btn btn-success"
-            href="/campgrounds/<%= campground._id %>/comments/new"
-            >Add New Comment!</a
-          >
+          <a class="btn btn-success" href="/campgrounds/<%= campground._id %>/comments/new">Add New Comment!</a>
         </div>
         <hr />
-        <!-- MOSTRARE TUTTI I COMMENTI RELATIVI AL CAMPGROUND IN QUESTIONE -->
         <% campground.comments.forEach(function(comment){ %>
         <div class="row">
           <div class="col-md-12">
-            <!-- MOSTRIAMO CIASCUN COMMENTO AL INTERNO DI UN PARAGRAFO CON L'AUTORE IN GRASSETTO -->
             <strong><%= comment.author.username %></strong>
             <span class="pull-right">10 days ago</span>
             <p>
               <%= comment.text %>
             </p>
-
-            <!-- SE L'UTENTE E' LOGGATO ED E' L'AUTORE DEL COMMENTO MOSTRIAMO 
-                            I PULSANTI PER MODIFICARE O ELIMINARE QUEL COMMENTO -->
             <% if(currentUser && comment.author.id.equals(currentUser._id)){ %>
-
-            <a
-              href="/campgrounds/<%= campground._id %>/comments/<%= comment._id %>/edit"
-              class="btn btn-xs btn-warning"
-              >Edit</a
-            >
-            <form
-              action="/campgrounds/<%= campground._id %>/comments/<%= comment._id %>?_method=DELETE"
-              class="delete_form"
-              method="POST"
-            >
-              <input
-                type="submit"
-                class="btn btn-xs btn-danger"
-                value="Delete"
-              />
+            <a href="/campgrounds/<%= campground._id %>/comments/<%= comment._id %>/edit"
+              class="btn btn-xs btn-warning">Edit</a>
+            <form action="/campgrounds/<%= campground._id %>/comments/<%= comment._id %>?_method=DELETE"
+              class="delete_form" method="POST">
+              <input type="submit" class="btn btn-xs btn-danger" value="Delete" />
             </form>
-
             <% } %>
           </div>
         </div>

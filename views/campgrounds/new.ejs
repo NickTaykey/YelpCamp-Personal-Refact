@@ -1,68 +1,23 @@
 <% include ../partials/header %>
 <div class="container">
   <h1 class="text-center">New Campground</h1>
-
-  <!-- definiamo un tag row perché vogliamo USARE IL GRID SYSTEM IN MODO CHE IL FORM VENGA MOSTRATO
-        OCCUPANDO TUTTE LE 12 COLONNE DELLA GRIGLIA E QUINDI OCCUPANDO TUTTA LA LARGHEZZA DELLO SCHERMO ANCHE
-        QUANDO E' VISUALIZZATO SU DISPOSTIVI MOBILI IN QUESTO MODO E' RESPONSIVO
-    -->
   <div class="row form-row">
     <form action="/campgrounds" method="POST" enctype="multipart/form-data">
-      <!-- definiamo ogni campo del form (compreso il bottone )
-        dentro un div con classe form-group PER DARGLI UNA SPAZIATURA 
-        E DISTANZIARLO DAL PRECEDENTE E DAL SUCCESSIVO -->
       <div class="form-group">
-        <input
-          class="form-control"
-          type="text"
-          name="name"
-          placeholder="name"
-          value="<% if(name) { %><%= name %><% } %>"
-        />
+        <input class="form-control" type="text" name="name" placeholder="name"
+          value="<% if(name) { %><%= name %><% } %>" />
       </div>
       <div class="form-group">
         <label for="images">4 images at the most</label>
-        <input
-          class="form-control"
-          type="file"
-          name="images"
-          accept="image/*"
-          multiple
-          id="images"
-        />
-      </div>
-
-      <div class="form-group">
-        <!-- IL PREZZO PREZZO SARA' UN INPUT CON type="number", QUESTO CI PERMETTE DI INSERIRE SOLO NUMERI
-                         NON STRINGHE IN QUESTO MODO SIAMO SICURI CHE IL PREZZO INSERITO DAL UTENTE SIA UN NUMERO E NON 
-                         UNA STRINGA 
-                         DI FIANCO AL ELEMENTO HTML input CI SONO DUE FRECCETTE, UNA RIVOLTA VERSO IL BASSO E L'ALTRA
-                         VERSO L'ALTO CHE PERMETTONO DI MODIFICARE IL PREZZO INSERITO AUMENTANDOLO O DIMINUENDOLO CON
-                         L'ATTRIBUTO min SPECIFICHIAMO IL PREZZO MINIMO CHE L'UTENTE PUO' INSERIRE, SE METTE UN PREZZO INFERIORE
-                         A QUESTO IL VALORE PASSATO A min SARA' QUELLO DI DEFAULT, A step PASSIAMO DI QUANTO VOGLIAMO AUMENTARE
-                         O DIMINUIRE IL PREZZO INSERITO QUANDO PREMIAMO UNA DELLE DUE FRECCETTE 
-                    -->
-        <input
-          class="form-control"
-          type="number"
-          name="price"
-          placeholder="price"
-          min="0.01"
-          step="100"
-          value="<% if(price) { %><%= price %><% } %>"
-        />
+        <input class="form-control" type="file" name="images" accept="image/*" multiple id="images" />
       </div>
       <div class="form-group">
-        <textarea
-          class="form-control"
-          name="description"
-          id=""
-          cols="30"
-          rows="10"
-          placeholder="description ... "
-        >
-<% if(description) { %><%= description %><% } %></textarea
-        >
+        <input class="form-control" type="number" name="price" placeholder="price" min="0.01" step="100"
+          value="<% if(price) { %><%= price %><% } %>" />
+      </div>
+      <div class="form-group">
+        <textarea class="form-control" name="description" id="" cols="30" rows="10" placeholder="description ... ">
+<% if(description) { %><%= description %><% } %></textarea>
       </div>
       <div class="form-group">
         <button class="btn btn-lg btn-primary btn-block" type="submit">
@@ -70,10 +25,8 @@
         </button>
       </div>
     </form>
-
     <a href="/campgrounds">go back</a>
   </div>
 </div>
 <script src="/javascript/newCampground.js"></script>
-
 <% include ../partials/footer %>

@@ -1,73 +1,41 @@
 <% include ../partials/header %>
-
-<!-- USIAMO header AL POSTO DI div PER DARE PIU' SIGNIFICATO AL CODICE (header e div sono uguali ma usiamo
-     header PER DEFINIRE L'INTESTAZIONE DI UNA PAGINA) -->
 <div class="container">
-  <%# if(login_wellcome){ %>
-  <!-- <div class="alert alert-success" role="alert"> -->
-  <%# login_wellcome %>
-  <!-- </div> -->
-  <%# } %>
   <header class="jumbotron">
     <div class="container">
       <H1>Wellcome To YelpCamp</H1>
       <h3>See our campgrounds from all over the world</h3>
-      <!-- METTIAMO IL LINK DENTRO A UN P PER AGGIUNGERE DELLA SPAZIATURA SOPRA E SOTTO -->
       <p>
-        <a href="/campgrounds/new" class="btn btn-primary btn-lg"
-          >NEW CAMPGROUND</a
-        >
+        <a href="/campgrounds/new" class="btn btn-primary btn-lg">NEW CAMPGROUND</a>
       </p>
     </div>
   </header>
-  <!-- SPECIFICHIAMO display: flex; flex-wrap: wrap; IN MODO CHE OGNI COLONNA SIA DISTANTE DA QUELLA SOTTO
-         LO SPAZIO MINIMO AFFINCHE TUTTE LE COLONNE A PRESCINDERE DAL ALTEZZA VENGANO MOSTRATE IN RIGA 
-         (quindi non succedano errori in cui una riga è saltata o incompleta)-->
   <div class="row text-center">
-    <!-- ANCHE SE DI DEFAULT SE NON SPECIFICHIAMO NESSUNA col-.. GLI VIENE DATA COME LARGHEZZA 12
-             SPECIFICHIAMO col-lg-12 IN QUANTO E' POSSIBILE CHE QUANDO LO SCHERMO E' GRANDE SI ADATTI PER
-             OCCUPARE LO SPAZIO AVAVANZATO DALLE ALTRE COLONNE MA NOI VOGLIAMO CHE OCCUPI SEMPRE 12 COLONNE 
-        -->
     <div class="col-md-12 col-lg-12">
       <h3>
         Here you are our best campgrounds
       </h3>
     </div>
-    <!-- MOSTRIAMO TUTTI I CAMPGROUNDS -->
-
     <% campgrounds.forEach(function (campground){ %>
     <div class="col-md-6 col-lg-3">
-      <!-- inseriamo ogni campground dentro un thumbnail in questo modo ogni immagine ha la stessa
-                 larghezza e un altezza simile alle altre
-            -->
       <div class="thumbnail">
-        <div
-          id="carousel-example-generic"
-          class="carousel slide"
-          data-ride="carousel"
-        >
-          <!-- Wrapper for slides -->
+        <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
           <div class="carousel-inner" role="listbox">
             <% for(var i = 0; i<campground.images.length; i++){ %>
-                <div class="item <% if(i===0){ %>active<% } %>">
-                    <img src="<%= campground.images[i].url ? campground.images[i].url : '' %>" alt="image of <%= campground.name %>" />
-                </div>
+            <div class="item <% if(i===0){ %>active<% } %>">
+              <img src="<%= campground.images[i].url ? campground.images[i].url : '' %>"
+                alt="image of <%= campground.name %>" />
+            </div>
             <% } %>
           </div>
         </div>
-
-        <!-- usiamo caption per inserire del contenuto sotto l'immagine -->
         <div class="caption">
           <h4><%= campground.name %></h4>
           <p>
-            <a href="/campgrounds/<%= campground._id %>" class="btn btn-primary"
-              >more info</a
-            >
+            <a href="/campgrounds/<%= campground._id %>" class="btn btn-primary">more info</a>
           </p>
         </div>
       </div>
     </div>
-
     <% }); %>
   </div>
 </div>
