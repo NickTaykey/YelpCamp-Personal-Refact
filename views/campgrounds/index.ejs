@@ -50,7 +50,7 @@
           <div class="carousel-inner" role="listbox">
             <% for(var i = 0; i<campground.images.length; i++){ %>
                 <div class="item <% if(i===0){ %>active<% } %>">
-                    <img src="<%= campground.images[i].url %>" alt="image of <%= campground.name %>" />
+                    <img src="<%= campground.images[i].url ? campground.images[i].url : '' %>" alt="image of <%= campground.name %>" />
                 </div>
             <% } %>
           </div>

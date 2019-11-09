@@ -88,6 +88,42 @@ let middlewareOBJ = {
     res.locals.price = req.cookies.price;
     next();
   },
-  deleteImages
+  deleteImages,
+  // middleware to validate a campground
+  validateCampground(req, res, next) {
+    const campground = req.method === "PUT" ? req.body.campground : req.body,
+      errors = [],
+      fields = {};
+    if (campground.name.length) fields.name = campground.name;
+    else errors.push("name");
+    if (campground.price.length) fields.price = campground.price;
+    else errors.push("price");
+    if (campground.description.length)
+      fields.description = campground.description;
+    else errors.push("description");
+
+    if (!errors.length) return next();
+    else {
+      let msg = `You have to provide${errors.length > 1 ? ":" : ""} `,
+        i = 0;
+      for (const err of errors) {
+        msg += `${err}${
+          i === errors.length - 2
+            ? " and "
+            : i !== errors.length - 1
+            ? ", "
+            : ""
+        }`;
+        i++;
+      }
+      if (fields.name) res.cookie("name", fields.name);
+      if (fields.price) res.cookie("price", fields.price);
+      if (fields.description) res.cookie("description", fields.description);
+      if (req.files.length) deleteImages(req, res, next);
+
+      req.flash("error", msg);
+      res.redirect("back");
+    }
+  }
 };
 module.exports = middlewareOBJ;

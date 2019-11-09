@@ -22,7 +22,8 @@ const {
     checkUserOwnership,
     validateImgs,
     destroyFormCookies,
-    deleteImages
+    deleteImages,
+    validateCampground
   } = require("../middleware/modelsMiddleware"),
   { isLoggedIn } = require("../middleware/authMiddleware"),
   { asyncErrorHandler } = require("../middleware");
@@ -37,7 +38,7 @@ router.get(
 );
 
 // NEW
-router.get("/new", destroyFormCookies, isLoggedIn, (req, res, next) =>
+router.get("/new", isLoggedIn, destroyFormCookies, (req, res, next) =>
   res.render("campgrounds/new")
 );
 
@@ -61,6 +62,7 @@ router.post(
   isLoggedIn,
   upload.array("images", 4),
   validateImgs,
+  validateCampground,
   asyncErrorHandler(async (req, res, next) => {
     let { name, description, price } = req.body;
     let newCampGround = {
@@ -109,6 +111,7 @@ router.put(
   checkUserOwnership,
   upload.array("images", 4),
   validateImgs,
+  validateCampground,
   asyncErrorHandler(async (req, res, next) => {
     // selezionare il campground
     let campground = await Campground.findById(req.params.id),

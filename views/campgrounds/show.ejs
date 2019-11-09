@@ -39,7 +39,7 @@
           <div class="carousel-inner" role="listbox">
             <% for(var i = 0; i<campground.images.length; i++){ %>
               <div class="item <% if(i===0){ %>active<% } %>">
-                <img src="<%= campground.images[i].url %>" alt="image of <%= campground.name %>" />
+                <img src="<%= campground.images.length ? campground.images[i].url : '' %>" alt="image of <%= campground.name %>" />
               </div>
             <% } %>
           </div>
@@ -71,7 +71,7 @@
           </a>
         </div>
         <% } else { %>
-          <img class="img-responsive" src="<%= campground.images[0].url %>" alt="">
+          <img class="img-responsive" src="<%= campground.images.length ? campground.images[0].url : '' %>" alt="">
         <% } %>
         <!-- PER AGGIUNGERE DEL CONTENUTO SOTTO L'IMMAGINE DEL THUMBNAIL -->
         <div class="caption">
