@@ -124,6 +124,11 @@ let middlewareOBJ = {
       req.flash("error", msg);
       res.redirect("back");
     }
+  },
+  validateComment(req, res, next) {
+    if (req.body.comment.text.length) return next();
+    req.flash("error", "you have to provide the text");
+    res.redirect("back");
   }
 };
 module.exports = middlewareOBJ;

@@ -7,7 +7,10 @@ const Campground = require("../models/campground"),
   Comment = require("../models/comment");
 
 // MIDDLEWARE
-const { checkCommentOwnership } = require("../middleware/modelsMiddleware"),
+const {
+    checkCommentOwnership,
+    validateComment
+  } = require("../middleware/modelsMiddleware"),
   { isLoggedIn } = require("../middleware/authMiddleware"),
   { asyncErrorHandler } = require("../middleware");
 
@@ -33,6 +36,7 @@ Router.get(
 Router.post(
   "/",
   isLoggedIn,
+  validateComment,
   asyncErrorHandler(async (req, res, next) => {
     let campground = await Campground.findById(req.params.id);
     if (campground) {
@@ -79,6 +83,7 @@ Router.get(
 Router.put(
   "/:comment_id",
   checkCommentOwnership,
+  validateComment,
   asyncErrorHandler(async (req, res, next) => {
     let campground = await Campground.findById(req.params.id);
     if (campground) {
