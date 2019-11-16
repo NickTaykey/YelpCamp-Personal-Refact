@@ -43,7 +43,9 @@
           <h4 class="pull-right">
             <strong>$<%= campground.price %></strong>/night
           </h4>
-          <h4><a href=""><%= campground.name %></a></h4>
+          <h2><a href=""><%= campground.name %></a></h2>
+          <h4><%= campground.location %></h4>
+          <div id="map"></div>
           <p><%= campground.description %></p>
           <p>Submited By <em><%= campground.author.username %></em></p>
           <% if(currentUser && campground.author.id.equals(currentUser._id)){ %>
@@ -82,4 +84,8 @@
     </div>
   </div>
 </div>
+<script>
+  const campground = <%- JSON.stringify(campground) %>
+</script>
+<script src="/javascripts/showMap.js"></script>
 <% include ../partials/footer %>
