@@ -4,6 +4,8 @@ const campgroudSchema = new mongoose.Schema({
   images: [{ url: String, public_id: String }],
   price: String,
   description: String,
+  location: String,
+  coordinates: Array,
   author: {
     id: {
       type: mongoose.Schema.Types.ObjectId,

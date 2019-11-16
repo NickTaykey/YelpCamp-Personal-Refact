@@ -36,7 +36,7 @@ app.use(flash());
 app.use(cookieParser());
 
 // DB CONNECTION
-mongoose.connect("mongodb://localhost:27017/YelpCamp_img_upload", {
+mongoose.connect("mongodb://localhost:27017/YelpCamp_maps", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useCreateIndex: true,
