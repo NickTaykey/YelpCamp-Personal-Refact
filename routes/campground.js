@@ -2,7 +2,8 @@
 const express = require("express"),
   router = express.Router(),
   multer = require("multer"),
-  cloudinary = require("cloudinary");
+  cloudinary = require("cloudinary"),
+  mapbox = require("@mapbox/mapbox-sdk/services/geocoding");
 
 // MULTER CONFIG
 const upload = multer({ dest: "uploads/" });
@@ -12,6 +13,8 @@ cloudinary.config({
   api_key: "529692727915557",
   api_secret: process.env.CLOUDINARY_SECRET
 });
+// MAPBOX CONFIG
+let geocodeClient = mapbox({ accessToken: process.env.MAPBOX_TOKEN });
 
 // MODELS
 const Campground = require("../models/campground"),
@@ -62,11 +65,12 @@ router.post(
   validateCampground,
   validateImgs,
   asyncErrorHandler(async (req, res, next) => {
-    let { name, description, price } = req.body;
+    let { name, description, price, location } = req.body;
     let newCampGround = {
       name,
       description,
       price,
+      location,
       author: { username: req.user.username, id: req.user._id }
     };
     newCampGround.images = [];
@@ -77,6 +81,10 @@ router.post(
         public_id: img.public_id
       });
     }
+    // find out the coordinates of the location
+    let response = await geocodeClient.forwardGeocode({ query: location, limit: 1 }).send();
+    // associate the coordinate found through the API to the DB
+    newCampGround.coordinates = response.body.features[0].geometry.coordinates;
     let newCamp = await Campground.create(newCampGround);
     req.flash("success", `${newCamp.name} successfully created`);
     res.redirect("/campgrounds");
