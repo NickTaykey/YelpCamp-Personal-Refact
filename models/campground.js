@@ -5,6 +5,7 @@ const campgroudSchema = new mongoose.Schema({
   price: String,
   description: String,
   location: String,
+  placeName: String,
   coordinates: Array,
   author: {
     id: {

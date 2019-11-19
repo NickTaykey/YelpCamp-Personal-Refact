@@ -22,14 +22,14 @@ const Campground = require("../models/campground"),
 
 // MIDDLEWARE
 const {
-  checkUserOwnership,
-  validateImgs,
-  destroyFormCookies,
-  deleteImages,
-  validateCampground,
-  isLoggedIn,
-  checkCampground
-} = require("../middleware/modelsMiddleware"),
+    checkUserOwnership,
+    validateImgs,
+    destroyFormCookies,
+    deleteImages,
+    validateCampground,
+    isLoggedIn,
+    checkCampground
+  } = require("../middleware/modelsMiddleware"),
   { asyncErrorHandler } = require("../middleware");
 
 // INDEX
@@ -82,9 +82,14 @@ router.post(
       });
     }
     // find out the coordinates of the location
-    let response = await geocodeClient.forwardGeocode({ query: location, limit: 1 }).send();
+    let response = await geocodeClient
+      .forwardGeocode({ query: location, limit: 1 })
+      .send();
     // associate the coordinate found through the API to the DB
     newCampGround.coordinates = response.body.features[0].geometry.coordinates;
+    newCampGround.location = response.body.features[0].text;
+    newCampGround.placeName = response.body.features[0].place_name;
+
     let newCamp = await Campground.create(newCampGround);
     req.flash("success", `${newCamp.name} successfully created`);
     res.redirect("/campgrounds");
@@ -139,12 +144,17 @@ router.put(
     // checkout if the location has changes
     if (bodyCampground.location !== campground.location) {
       // if yes find out the new coordinates
-      let response = await geocodeClient.forwardGeocode({ query: bodyCampground.location, limit: 1 }).send();
+      let response = await geocodeClient
+        .forwardGeocode({ query: bodyCampground.location, limit: 1 })
+        .send();
       // associate them and the location to the database
       campground.location = bodyCampground.location;
       campground.coordinates = response.body.features[0].geometry.coordinates;
+      campground.placeName = response.body.features[0].place_name;
     }
-    ['name', 'price', 'description'].forEach(n => campground[n] = bodyCampground[n])
+    ["name", "price", "description"].forEach(
+      n => (campground[n] = bodyCampground[n])
+    );
     await campground.save();
     req.flash("success", "Campground successfully updated");
     res.redirect(`/campgrounds/${req.params.id}`);
@@ -160,7 +170,8 @@ router.delete(
   asyncErrorHandler(async (req, res, next) => {
     let campground = await Campground.findByIdAndRemove(req.params.id);
     for (const id of campground.comments) await Comment.findByIdAndRemove(id);
-    for (const img of campground.images) await cloudinary.v2.uploader.destroy(img.public_id);
+    for (const img of campground.images)
+      await cloudinary.v2.uploader.destroy(img.public_id);
     req.flash("success", "campground successfully deleted");
     res.redirect("/campgrounds");
   })
