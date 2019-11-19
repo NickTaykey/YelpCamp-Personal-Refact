@@ -136,6 +136,14 @@ router.put(
         public_id: cloudImg.public_id
       });
     }
+    // checkout if the location has changes
+    if (bodyCampground.location !== campground.location) {
+      // if yes find out the new coordinates
+      let response = await geocodeClient.forwardGeocode({ query: bodyCampground.location, limit: 1 }).send();
+      // associate them and the location to the database
+      campground.location = bodyCampground.location;
+      campground.coordinates = response.body.features[0].geometry.coordinates;
+    }
     ['name', 'price', 'description'].forEach(n => campground[n] = bodyCampground[n])
     await campground.save();
     req.flash("success", "Campground successfully updated");
