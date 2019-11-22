@@ -29,6 +29,7 @@ const {
     validateCampground,
     isLoggedIn,
     checkCampground
+    // validateLocation
   } = require("../middleware/modelsMiddleware"),
   { asyncErrorHandler } = require("../middleware");
 
@@ -62,7 +63,8 @@ router.post(
   "/",
   isLoggedIn,
   upload.array("images", 4),
-  validateCampground,
+  asyncErrorHandler(validateCampground),
+  // validateLocation,
   validateImgs,
   asyncErrorHandler(async (req, res, next) => {
     let { name, description, price, location } = req.body;
@@ -87,7 +89,7 @@ router.post(
       .send();
     // associate the coordinate found through the API to the DB
     newCampGround.coordinates = response.body.features[0].geometry.coordinates;
-    newCampGround.location = response.body.features[0].text;
+    newCampGround.location = newCampGround.location;
     newCampGround.placeName = response.body.features[0].place_name;
 
     let newCamp = await Campground.create(newCampGround);
@@ -115,7 +117,8 @@ router.put(
   "/:id",
   checkUserOwnership,
   upload.array("images", 4),
-  validateCampground,
+  asyncErrorHandler(validateCampground),
+  // validateLocation,
   validateImgs,
   asyncErrorHandler(async (req, res, next) => {
     let campground = await Campground.findById(req.params.id),

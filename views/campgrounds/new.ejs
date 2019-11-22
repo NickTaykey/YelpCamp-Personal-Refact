@@ -4,23 +4,57 @@
   <div class="row form-row">
     <form action="/campgrounds" method="POST" enctype="multipart/form-data">
       <div class="form-group">
-        <input class="form-control" type="text" name="name" placeholder="name"
-          value="<% if(name) { %><%= name %><% } %>" />
+        <input
+          class="form-control"
+          type="text"
+          name="name"
+          placeholder="name"
+          value="<% if(name) { %><%= name %><% } %>"
+        />
       </div>
       <div class="form-group">
-        <input class="form-control" type="text" name="location" placeholder="location">
+        <input
+          class="form-control"
+          type="text"
+          name="location"
+          id="location"
+          placeholder="location"
+          value="<% if(location){ %><%= location %><% } %>"
+        />
       </div>
       <div class="form-group">
         <label for="images">4 images at the most</label>
-        <input class="form-control" type="file" name="images" accept="image/*" multiple id="images" />
+        <input
+          class="form-control"
+          type="file"
+          name="images"
+          accept="image/*"
+          multiple
+          id="images"
+        />
       </div>
       <div class="form-group">
-        <input class="form-control" type="number" name="price" placeholder="price" min="0.01" step="100"
-          value="<% if(price) { %><%= price %><% } %>" />
+        <input
+          class="form-control"
+          type="number"
+          name="price"
+          placeholder="price"
+          min="0.01"
+          step="100"
+          value="<% if(price) { %><%= price %><% } %>"
+        />
       </div>
       <div class="form-group">
-        <textarea class="form-control" name="description" id="" cols="30" rows="10" placeholder="description ... ">
-<% if(description) { %><%= description %><% } %></textarea>
+        <textarea
+          class="form-control"
+          name="description"
+          id=""
+          cols="30"
+          rows="10"
+          placeholder="description ... "
+        >
+<% if(description) { %><%= description %><% } %></textarea
+        >
       </div>
       <div class="form-group">
         <button class="btn btn-lg btn-primary btn-block" type="submit">
@@ -31,5 +65,6 @@
     <a href="/campgrounds">go back</a>
   </div>
 </div>
+<script src="/javascripts/validateLocation.js"></script>
 <script src="/javascripts/newCampground.js"></script>
 <% include ../partials/footer %>

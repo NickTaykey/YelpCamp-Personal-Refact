@@ -1,4 +1,4 @@
-let form = document.querySelector("form");
+var form = document.querySelector("form");
 form.addEventListener("submit", event => {
   let images = document.querySelector("#images");
   if (images.files.length > 4) {

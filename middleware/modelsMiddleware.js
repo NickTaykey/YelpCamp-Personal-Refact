@@ -6,13 +6,13 @@ const Campground = require("../models/campground"),
   Comment = require("../models/comment");
 
 // campground fields
-const formFields = ["name", "price", "description"];
+const formFields = ["name", "price", "description", "location"];
 
 let isLoggedIn = (req, res, next) => {
-  if (req.isAuthenticated()) return typeof next === "boolean" ? next : next();
-  req.flash("error", "You need to be logged in to do that");
-  res.redirect("/login");
-},
+    if (req.isAuthenticated()) return typeof next === "boolean" ? next : next();
+    req.flash("error", "You need to be logged in to do that");
+    res.redirect("/login");
+  },
   deleteImages = (req, res, next) => {
     for (const file of req.files) fs.unlinkSync(file.path);
   };
@@ -93,9 +93,9 @@ let middlewareOBJ = {
           i === errors.length - 2
             ? " and "
             : i !== errors.length - 1
-              ? ", "
-              : ""
-          }`)
+            ? ", "
+            : ""
+        }`)
     );
     formFields.forEach(n => {
       if (fields[n]) res.cookie(n, fields[n]);
