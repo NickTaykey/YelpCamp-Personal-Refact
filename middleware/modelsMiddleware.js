@@ -10,7 +10,7 @@ const formFields = ["name", "price", "description", "location"];
 
 let isLoggedIn = (req, res, next) => {
     if (req.isAuthenticated()) return typeof next === "boolean" ? next : next();
-    req.flash("error", "You need to be logged in to do that");
+    req.session.error = "You need to be logged in to do that";
     res.redirect("/login");
   },
   deleteImages = (req, res, next) => {
@@ -21,7 +21,7 @@ let middlewareOBJ = {
     if (isLoggedIn(req, res, true)) {
       let campgroud = await Campground.findById(req.params.id);
       if (campgroud && campgroud.author.id.equals(req.user._id)) return next();
-      req.flash("error", "You don't have the permissions to do that");
+      req.session.error = "You don't have the permissions to do that";
       res.redirect("back");
     }
   },
@@ -29,7 +29,7 @@ let middlewareOBJ = {
     if (isLoggedIn(req, res, true)) {
       let comment = await Comment.findById(req.params.comment_id);
       if (comment && comment.author.id.equals(req.user._id)) return next();
-      req.flash("error", "you don't have the permision to do that");
+      req.session.error = "you don't have the permision to do that";
       res.redirect("back");
     }
   },
@@ -45,17 +45,16 @@ let middlewareOBJ = {
               res.cookie(`deleteImg${i}`, delImg)
             );
           deleteImages(req, res, next);
-          req.flash(
-            "error",
-            "Only image files jpg, jpeg, png, or gif are allowed! "
-          );
+          req.session.error =
+            "Only image files jpg, jpeg, png, or gif are allowed! ";
+
           return res.redirect("back");
         }
       }
       next();
     } else if (!context) {
       formFields.forEach(n => res.cookie(n, req.body[n]));
-      req.flash("error", "You have to provvide at least one image! ");
+      req.session.error = "You have to provvide at least one image! ";
       return res.redirect("back");
     } else next();
   },
@@ -101,18 +100,18 @@ let middlewareOBJ = {
       if (fields[n]) res.cookie(n, fields[n]);
     });
     deleteImages(req, res, next);
-    req.flash("error", msg);
+    req.session.error = msg;
     res.redirect("back");
   },
   validateComment(req, res, next) {
     if (req.body.comment.text.length) return next();
-    req.flash("error", "you have to provide the text");
+    req.session.error = "you have to provide the text";
     res.redirect("back");
   },
   async checkCampground(req, res, next) {
     let campgroud = await Campground.findById(req.params.id);
     if (campgroud) return next();
-    req.flash("error", "campground not found");
+    req.sessio.error = "campground not found";
     res.redirect("/campgrounds");
   }
 };

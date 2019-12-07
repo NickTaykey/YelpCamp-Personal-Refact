@@ -5,11 +5,11 @@ const express = require("express"),
   app = express(),
   bodyParser = require("body-parser"),
   mongoose = require("mongoose"),
-  flash = require("connect-flash"),
   passport = require("passport"),
   LocalStrategy = require("passport-local"),
   expressSession = require("express-session"),
   cookieParser = require("cookie-parser"),
+  engine = require("ejs-mate"),
   methodOverride = require("method-override");
 
 // MODELS
@@ -22,6 +22,7 @@ const indexRoutes = require("./routes/index"),
 
 // MIDDLEWARE CONFIG
 app.use(bodyParser.urlencoded({ extended: true }));
+app.engine("ejs", engine);
 app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/public"));
 app.use(methodOverride("_method"));
@@ -32,7 +33,6 @@ app.use(
     saveUninitialized: false
   })
 );
-app.use(flash());
 app.use(cookieParser());
 
 // DB CONNECTION
@@ -56,8 +56,10 @@ passport.deserializeUser(User.deserializeUser());
 // TEMPLATE CONFIG MIDDLEWARE
 app.use((req, res, next) => {
   res.locals.currentUser = req.user;
-  res.locals.error = req.flash("error");
-  res.locals.success = req.flash("success");
+  res.locals.error = req.session.error;
+  res.locals.success = req.session.success;
+  delete req.session.error;
+  delete req.session.success;
   next();
 });
 

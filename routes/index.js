@@ -26,11 +26,11 @@ Router.post("/register", async (req, res, next) => {
   try {
     let user = await User.register(newUser, req.body.password);
     passport.authenticate("local")(req, res, () => {
-      req.flash("success", `wellcome on YelpCamp ${user.username}!`);
+      req.session.success = `wellcome on YelpCamp ${user.username}!`;
       res.redirect("/campgrounds");
     });
   } catch (err) {
-    req.flash("error", err.message);
+    req.session.error = err.message;
     return res.redirect("/register");
   }
 });
@@ -50,7 +50,7 @@ Router.post(
 // LOGOUT
 Router.get("/logout", (req, res, next) => {
   req.logout();
-  req.flash("success", "You are logged out!");
+  req.session.success = "You are logged out!";
   res.redirect("back");
 });
 

@@ -93,7 +93,7 @@ router.post(
     newCampGround.placeName = response.body.features[0].place_name;
 
     let newCamp = await Campground.create(newCampGround);
-    req.flash("success", `${newCamp.name} successfully created`);
+    req.session.success = `${newCamp.name} successfully created`;
     res.redirect("/campgrounds");
     next();
   }),
@@ -159,7 +159,7 @@ router.put(
       n => (campground[n] = bodyCampground[n])
     );
     await campground.save();
-    req.flash("success", "Campground successfully updated");
+    req.session.success = "Campground successfully updated";
     res.redirect(`/campgrounds/${req.params.id}`);
     next();
   }),
@@ -175,7 +175,7 @@ router.delete(
     for (const id of campground.comments) await Comment.findByIdAndRemove(id);
     for (const img of campground.images)
       await cloudinary.v2.uploader.destroy(img.public_id);
-    req.flash("success", "campground successfully deleted");
+    req.session.success = "campground successfully deleted";
     res.redirect("/campgrounds");
   })
 );

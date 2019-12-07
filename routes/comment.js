@@ -8,11 +8,11 @@ const Campground = require("../models/campground"),
 
 // MIDDLEWARE
 const {
-  checkCommentOwnership,
-  checkCampground,
-  validateComment,
-  isLoggedIn
-} = require("../middleware/modelsMiddleware"),
+    checkCommentOwnership,
+    checkCampground,
+    validateComment,
+    isLoggedIn
+  } = require("../middleware/modelsMiddleware"),
   { asyncErrorHandler } = require("../middleware");
 
 // ========================
@@ -44,7 +44,7 @@ Router.post(
     await comment.save();
     campground.comments.push(comment);
     await campground.save();
-    req.flash("success", "comment successfully added");
+    req.session.success = "comment successfully added";
     res.redirect("/campgrounds/" + req.params.id);
   })
 );
@@ -71,9 +71,8 @@ Router.put(
   validateComment,
   asyncErrorHandler(async (req, res, next) => {
     await Comment.findByIdAndUpdate(req.params.comment_id, req.body.comment);
-    req.flash("success", "comment successfully updated");
+    req.session.success = "comment successfully updated";
     res.redirect("/campgrounds/" + req.params.id);
-
   })
 );
 
@@ -84,7 +83,7 @@ Router.delete(
   checkCommentOwnership,
   asyncErrorHandler(async (req, res, next) => {
     await Comment.findByIdAndRemove(req.params.comment_id);
-    req.flash("success", "comment successfully deleted");
+    req.session.success = "comment successfully deleted";
     res.redirect(`/campgrounds/${req.params.id}`);
   })
 );
