@@ -75,6 +75,7 @@
           <div class="col-md-12">
             <strong><%= comment.author.username %></strong>
             <span class="pull-right">10 days ago</span>
+            <p class="starability-result" data-rating="<%= comment.rating %>" style="margin: 10px 0;"></p>
             <p>
               <%= comment.text %>
             </p>
