@@ -2,3 +2,8 @@ div.row.text-center {
   display: flex;
   flex-wrap: wrap;
 }
+
+.pagination {
+  display: flex;
+  justify-content: center;
+}

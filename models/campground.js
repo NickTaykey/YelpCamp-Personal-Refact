@@ -1,4 +1,6 @@
 const mongoose = require("mongoose");
+const mongoosePaginate = require("mongoose-paginate");
+
 const campgroudSchema = new mongoose.Schema({
   name: String,
   images: [{ url: String, public_id: String }],
@@ -21,5 +23,7 @@ const campgroudSchema = new mongoose.Schema({
     }
   ]
 });
+
+campgroudSchema.plugin(mongoosePaginate);
 
 module.exports = mongoose.model("Campground", campgroudSchema);
