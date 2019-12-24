@@ -41,6 +41,8 @@ router.get(
       {},
       { limit: 8, page: req.query.page || 1 }
     );
+    campgrounds.page = Number(campgrounds.page);
+    campgrounds.pages = Number(campgrounds.pages);
     res.render("campgrounds", { campgrounds });
   })
 );

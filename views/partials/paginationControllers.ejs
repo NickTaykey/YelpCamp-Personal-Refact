@@ -1,24 +1,26 @@
 <nav aria-label="Page navigation">
-    <% const pages = new Number(campgrounds.pages), page = new Number(campgrounds.page);   %>
-    <ul class="pagination">
-        <% if(page!=1){ %>
-            <li><a href="/campgrounds?page=1">First</a></li>
-            <li><a href="/campgrounds?page=<%= page-1 %>" aria-label="Previous">
-            <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
-            </a></li>
-        <% } %>
-        <% for(let p = 1; p<=pages; p++){ %>
-            <li class="<% if(p==page){ %>active<% } %>">
-            <a href="/campgrounds?page=<%= p %>"><%= p %></a>
-            </li>
-        <% } %>
-        <% if(page<pages){ %>
-            <li>
-            <a href="/campgrounds?page=<%= page+1 %>" aria-label="Next">
-                <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>
-            </a>
-            </li>
-            <li><a href="/campgrounds?page=<%= pages %>">Last</a></li>
-        <% } %>
-    </ul>
+  <ul class="pagination">
+    <% if(campgrounds.page-1){ %>
+    <li><a href="/campgrounds?page=1">First</a></li>
+    <li>
+      <a
+        href="/campgrounds?page=<%= campgrounds.page-1 %>"
+        aria-label="Previous"
+      >
+        <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
+      </a>
+    </li>
+    <% } %> <% for(let p = 1; p<=campgrounds.pages; p++){ %>
+    <li class="<%= p==campgrounds.page ? 'active' : '' %>">
+      <a href="/campgrounds?page=<%= p %>"><%= p %></a>
+    </li>
+    <% } %> <% if(campgrounds.page!==campgrounds.pages){ %>
+    <li>
+      <a href="/campgrounds?page=<%= campgrounds.page+1 %>" aria-label="Next">
+        <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>
+      </a>
+    </li>
+    <li><a href="/campgrounds?page=<%= campgrounds.pages %>">Last</a></li>
+    <% } %>
+  </ul>
 </nav>
