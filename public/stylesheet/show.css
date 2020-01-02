@@ -23,3 +23,13 @@
   text-align: center;
   font-size: 15px;
 }
+
+.fa-star,
+.fa-star-half-alt {
+  color: #f9d71c;
+}
+
+#avg-rat-heading {
+  display: inline-block;
+  margin-right: 7px;
+}

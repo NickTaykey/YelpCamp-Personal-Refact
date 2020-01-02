@@ -49,6 +49,18 @@
             <strong>$<%= campground.price %></strong>/night
           </h4>
           <h2 class="info"><a href=""><%= campground.name %></a></h2>
+          <div class="info avg-rating">
+            <strong id="avg-rat-heading">average rating: </strong>
+            <% for(var i = 0; i<5; i++){ %>
+              <% if(floorRating>i){ %>
+                <i class="fas fa-star"></i>
+              <% } else if((campground.avgRating-i)>0 && (campground.avgRating-i)<1) { %>
+                <i class="fas fa-star-half-alt"></i>
+                <% } else { %>
+                <i class="far fa-star"></i>
+              <% } %>
+            <% } %>
+          </div>
           <div class="geo">
             <h4 class="location"><%= campground.placeName %></h4>
             <div id="map"></div>

@@ -111,7 +111,7 @@ let middlewareOBJ = {
   async checkCampground(req, res, next) {
     let campgroud = await Campground.findById(req.params.id);
     if (campgroud) return next();
-    req.sessio.error = "campground not found";
+    req.session.error = "campground not found";
     res.redirect("/campgrounds");
   }
 };

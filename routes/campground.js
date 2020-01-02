@@ -39,7 +39,7 @@ router.get(
   asyncErrorHandler(async (req, res, next) => {
     let campgrounds = await Campground.paginate(
       {},
-      { limit: 8, page: req.query.page || 1 }
+      { limit: 8, page: req.query.page || 1, sort: "-_id" }
     );
     campgrounds.page = Number(campgrounds.page);
     campgrounds.pages = Number(campgrounds.pages);
@@ -59,7 +59,8 @@ router.get(
   asyncErrorHandler(async (req, res, next) => {
     const id = req.params.id;
     let campground = await Campground.findById(id).populate("comments");
-    res.render("campgrounds/show", { campground });
+    let floorRating = await campground.calcAvgRating();
+    res.render("campgrounds/show", { campground, floorRating });
   })
 );
 
