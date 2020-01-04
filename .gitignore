@@ -1,3 +1,8 @@
 /node_modules
 .env
 /uploads
+campgroundGeoData.js
+cities.js
+getCampgroundData.js
+README.md
+.gitignore

@@ -6,7 +6,7 @@ mapboxgl.accessToken =
 let map = new mapboxgl.Map({
   container: "map",
   style: "mapbox://styles/mapbox/streets-v11",
-  center: campground.coordinates,
+  center: campground.geometry.coordinates,
   zoom: 15
 });
 
@@ -16,17 +16,11 @@ el.className = "marker";
 
 // create a marker for the location and bind it to the map
 new mapboxgl.Marker(el)
-  .setLngLat(campground.coordinates)
+  .setLngLat(campground.geometry.coordinates)
   .setPopup(
     new mapboxgl.Popup({ offset: 25 })
       // add popups which display the name of the campground and of the location
-      .setHTML(
-        "<h4>" +
-          campground.name +
-          '</h4><p class="popup-content">' +
-          campground.location +
-          "</p>"
-      )
+      .setHTML(campground.propreties.description)
   )
   .addTo(map);
 

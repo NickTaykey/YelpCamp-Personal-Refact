@@ -12,7 +12,7 @@ const express = require("express"),
   engine = require("ejs-mate"),
   methodOverride = require("method-override");
 
-require("./seeds")();
+// require("./seeds")();
 
 // MODELS
 const User = require("./models/user");
