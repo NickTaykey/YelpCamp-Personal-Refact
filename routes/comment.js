@@ -4,7 +4,8 @@ const express = require("express"),
 
 // MODELS
 const Campground = require("../models/campground"),
-  Comment = require("../models/comment");
+  Comment = require("../models/comment"),
+  User = require("../models/user");
 
 // MIDDLEWARE
 const {
@@ -39,7 +40,9 @@ Router.post(
   asyncErrorHandler(async (req, res, next) => {
     let campground = await Campground.findById(req.params.id),
       comment = await Comment.create(req.body.comment);
-    comment.author.id = req.user._id;
+
+    const { _id } = await User.findOne({ username: req.user.username });
+    comment.author._id = _id;
     comment.author.username = req.user.username;
     await comment.save();
     campground.comments.push(comment);

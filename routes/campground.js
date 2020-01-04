@@ -18,7 +18,8 @@ let geocodeClient = mapbox({ accessToken: process.env.MAPBOX_TOKEN });
 
 // MODELS
 const Campground = require("../models/campground"),
-  Comment = require("../models/comment");
+  Comment = require("../models/comment"),
+  User = require("../models/user");
 
 // MIDDLEWARE
 const {
@@ -58,7 +59,10 @@ router.get(
   checkCampground,
   asyncErrorHandler(async (req, res, next) => {
     const id = req.params.id;
-    let campground = await Campground.findById(id).populate("comments");
+    let campground = await Campground.findById(id).populate({
+      path: "comments",
+      options: { sort: "-_id" }
+    });
     let floorRating = await campground.calcAvgRating();
     res.render("campgrounds/show", { campground, floorRating });
   })
@@ -74,12 +78,15 @@ router.post(
   validateImgs,
   asyncErrorHandler(async (req, res, next) => {
     let { name, description, price, location } = req.body;
+    const { _id } = await User.findOne({ username: req.user.username });
     let newCampGround = {
       name,
       description,
       price,
       location,
-      author: { username: req.user.username, id: req.user._id }
+      geometry: {},
+      propreties: {},
+      author: { username: req.user.username, _id }
     };
     newCampGround.images = [];
     for (const file of req.files) {
@@ -94,11 +101,15 @@ router.post(
       .forwardGeocode({ query: location, limit: 1 })
       .send();
     // associate the coordinate found through the API to the DB
-    newCampGround.coordinates = response.body.features[0].geometry.coordinates;
+    newCampGround.geometry.coordinates =
+      response.body.features[0].geometry.coordinates;
+    newCampGround.geometry.type = "Point";
     newCampGround.location = newCampGround.location;
     newCampGround.placeName = response.body.features[0].place_name;
+    let newCamp = new Campground(newCampGround);
+    newCamp.propreties.description = `<h5><img src='${newCamp.images[0].url}'><a href='/campgrounds/${newCamp.id}'>${newCamp.name}</a></h5><strong>${newCamp.price}</strong>$ per night<br>${newCamp.placeName}, ${newCamp.location}`;
 
-    let newCamp = await Campground.create(newCampGround);
+    await newCamp.save();
     req.session.success = `${newCamp.name} successfully created`;
     res.redirect("/campgrounds");
     next();
@@ -157,9 +168,14 @@ router.put(
         .forwardGeocode({ query: bodyCampground.location, limit: 1 })
         .send();
       // associate them and the location to the database
+      campground.name = bodyCampground.name;
+      campground.price = bodyCampground.price;
+      campground.description = bodyCampground.description;
       campground.location = bodyCampground.location;
-      campground.coordinates = response.body.features[0].geometry.coordinates;
+      campground.geometry.coordinates =
+        response.body.features[0].geometry.coordinates;
       campground.placeName = response.body.features[0].place_name;
+      campground.propreties.description = `<h5><img src='${campground.images[0].url}'><a href='/campgrounds/${campground.id}'>${campground.name}</a></h5><strong>${campground.price}</strong>$ per night<br>${campground.placeName}, ${campground.location}`;
     }
     ["name", "price", "description"].forEach(
       n => (campground[n] = bodyCampground[n])

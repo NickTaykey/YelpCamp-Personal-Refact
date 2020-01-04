@@ -20,7 +20,7 @@ let middlewareOBJ = {
   async checkUserOwnership(req, res, next) {
     if (isLoggedIn(req, res, true)) {
       let campgroud = await Campground.findById(req.params.id);
-      if (campgroud && campgroud.author.id.equals(req.user._id)) return next();
+      if (campgroud && campgroud.author._id.equals(req.user._id)) return next();
       req.session.error = "You don't have the permissions to do that";
       res.redirect("back");
     }
@@ -28,7 +28,7 @@ let middlewareOBJ = {
   async checkCommentOwnership(req, res, next) {
     if (isLoggedIn(req, res, true)) {
       let comment = await Comment.findById(req.params.comment_id);
-      if (comment && comment.author.id.equals(req.user._id)) return next();
+      if (comment && comment.author._id.equals(req.user._id)) return next();
       req.session.error = "you don't have the permision to do that";
       res.redirect("back");
     }
