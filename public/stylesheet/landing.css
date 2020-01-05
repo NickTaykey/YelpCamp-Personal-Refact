@@ -1,83 +1,91 @@
 body {
-    background-color: #000;
+  background-color: #000;
 }
 
 #landing-header {
-    z-index: 1;
-    position: relative;
-    text-align: center;
-    padding-top: 40vh;
+  z-index: 1;
+  position: relative;
+  text-align: center;
+  padding-top: 10vh;
 }
 
 #landing-header h1 {
-    color: #fff;
+  color: #fff;
 }
 
-.slideshow { 
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    z-index: 0;
-    list-style: none;
-    margin: 0;
-    padding: 0;
+.slideshow {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
+.slideshow li {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-size: cover;
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  opacity: 0;
+  z-index: 0;
+  animation: imageAnimation 50s linear infinite;
+}
 
-.slideshow li { 
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    background-size: cover;
-    background-position: 50% 50%;
-    background-repeat: no-repeat;
+.slideshow li:nth-child(1) {
+  background-image: url("https://images.unsplash.com/photo-1455763916899-e8b50eca9967?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80");
+}
+.slideshow li:nth-child(2) {
+  background-image: url("https://images.unsplash.com/photo-1488682371245-58436e0dc611?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2690&q=80");
+  animation-delay: 10s;
+}
+.slideshow li:nth-child(3) {
+  background-image: url("https://images.unsplash.com/photo-1440262206549-8fe2c3b8bf8f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80");
+  animation-delay: 20s;
+}
+.slideshow li:nth-child(4) {
+  background-image: url("https://images.unsplash.com/photo-1568576550491-185584b2145a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1867&q=80");
+  animation-delay: 30s;
+}
+.slideshow li:nth-child(5) {
+  background-image: url("https://images.unsplash.com/photo-1523497873958-8639c94677f2?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1955&q=80");
+  animation-delay: 40s;
+}
+
+@keyframes imageAnimation {
+  0% {
     opacity: 0;
-    z-index: 0;
-    animation: imageAnimation 50s linear infinite; 
-}
-
-.slideshow li:nth-child(1) { 
-    background-image: url("https://cdn.pixabay.com/photo/2017/07/01/12/32/tent-2461376_1280.jpg") 
+    animation-timing-function: ease-in;
   }
-  .slideshow li:nth-child(2) { 
-    background-image: url("https://cdn.pixabay.com/photo/2016/06/06/08/32/tent-1439061_1280.jpg");
-    animation-delay: 10s; 
+  10% {
+    opacity: 1;
+    animation-timing-function: ease-out;
   }
-  .slideshow li:nth-child(3) { 
-    background-image: url("https://cdn.pixabay.com/photo/2016/09/18/18/18/tent-camping-1678714_1280.jpg");
-    animation-delay: 20s; 
+  20% {
+    opacity: 1;
   }
-  .slideshow li:nth-child(4) { 
-    background-image: url("https://cdn.pixabay.com/photo/2016/05/03/05/10/tent-1368516_1280.jpg");
-    animation-delay: 30s; 
+  30% {
+    opacity: 0;
   }
-  .slideshow li:nth-child(5) { 
-    background-image: url("https://cdn.pixabay.com/photo/2016/08/28/17/05/camping-1626412_1280.jpg");
-    animation-delay: 40s; 
-}
-
-@keyframes imageAnimation { 
-    0% { 
-      opacity: 0; 
-      animation-timing-function: ease-in;
-    }
-    10% {
-      opacity: 1;
-      animation-timing-function: ease-out;
-    }
-    20% {
-      opacity: 1
-    }
-    30% {
-      opacity: 0
-    }
 }
 
 /* Older browser support - .no-cssanimations class added by modernizr */
 .no-cssanimations .slideshow li {
-	opacity: 1;
+  opacity: 1;
+}
+
+/* map style */
+#map {
+  width: 60%;
+  height: 400px;
+  margin: 40px auto;
+  -moz-border-radius: 12px;
+  border-radius: 12px;
 }

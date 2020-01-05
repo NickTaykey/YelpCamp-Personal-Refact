@@ -5,11 +5,21 @@ const express = require("express"),
 
 // MODELS
 const User = require("../models/user");
+const Campground = require("../models/campground");
+
+// MIDDLEWARES
+const { asyncErrorHandler } = require("../middleware/index");
 
 // ROUTES
 
 // LANDING
-Router.get("/", (req, res, next) => res.render("landing"));
+Router.get(
+  "/",
+  asyncErrorHandler(async (req, res, next) => {
+    let campgrounds = await Campground.find();
+    res.render("landing", { campgrounds });
+  })
+);
 
 // =======================
 // AUTH ROUTES

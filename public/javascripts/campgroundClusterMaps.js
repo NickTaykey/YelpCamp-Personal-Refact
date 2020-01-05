@@ -4,7 +4,9 @@ mapboxgl.accessToken =
 // set basic map
 var map = new mapboxgl.Map({
   container: "map",
-  style: "mapbox://styles/mapbox/streets-v11",
+  style: isLanding
+    ? "mapbox://styles/nicktay/ck3amm1ti0idd1co986dq099f"
+    : "mapbox://styles/mapbox/streets-v11",
   center: [-94.955795, 40.764287],
   zoom: 3
 });
