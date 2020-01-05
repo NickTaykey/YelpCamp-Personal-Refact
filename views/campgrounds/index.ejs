@@ -3,7 +3,8 @@
   <header class="jumbotron">
     <div class="container">
       <H1>Wellcome To YelpCamp</H1>
-      <h3>See our campgrounds from all over the world</h3>
+      <h3>See our campgrounds from all over the US on this map</h3>
+      <div id="map" style="width: 100%; height: 450px;"></div>
       <p>
         <a href="/campgrounds/new" class="btn btn-primary btn-lg">NEW CAMPGROUND</a>
       </p>
@@ -42,3 +43,8 @@
 
 <% include ../partials/paginationControllers %>
 <% include ../partials/footer %>
+
+<script>
+  const campgrounds = {features: <%- JSON.stringify(campgrounds.docs) %>};
+</script>
+<script src="/javascripts/campgroundClusterMaps.js"></script>

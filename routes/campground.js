@@ -85,7 +85,7 @@ router.post(
       price,
       location,
       geometry: {},
-      propreties: {},
+      propeties: {},
       author: { username: req.user.username, _id }
     };
     newCampGround.images = [];
@@ -107,7 +107,7 @@ router.post(
     newCampGround.location = newCampGround.location;
     newCampGround.placeName = response.body.features[0].place_name;
     let newCamp = new Campground(newCampGround);
-    newCamp.propreties.description = `<h5><img src='${newCamp.images[0].url}'><a href='/campgrounds/${newCamp.id}'>${newCamp.name}</a></h5><strong>${newCamp.price}</strong>$ per night<br>${newCamp.placeName}, ${newCamp.location}`;
+    newCamp.properties.description = `<h5><img src='${newCamp.images[0].url}' style="max-width: 220px;"><a href='/campgrounds/${newCamp.id}'>${newCamp.name}</a></h5><strong>${newCamp.price}</strong>$ per night<br>${newCamp.placeName}, ${newCamp.location}`;
 
     await newCamp.save();
     req.session.success = `${newCamp.name} successfully created`;
@@ -175,7 +175,7 @@ router.put(
       campground.geometry.coordinates =
         response.body.features[0].geometry.coordinates;
       campground.placeName = response.body.features[0].place_name;
-      campground.propreties.description = `<h5><img src='${campground.images[0].url}'><a href='/campgrounds/${campground.id}'>${campground.name}</a></h5><strong>${campground.price}</strong>$ per night<br>${campground.placeName}, ${campground.location}`;
+      campground.properties.description = `<h5><img src='${campground.images[0].url}' style="max-width: 220px;"><a href='/campgrounds/${campground.id}'>${campground.name}</a></h5><strong>${campground.price}</strong>$ per night<br>${campground.placeName}, ${campground.location}`;
     }
     ["name", "price", "description"].forEach(
       n => (campground[n] = bodyCampground[n])

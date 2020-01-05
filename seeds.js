@@ -32,36 +32,31 @@ module.exports = async () => {
       images: [
         {
           url:
-            "https://res.cloudinary.com/dmxuerbxv/image/upload/v1578074116/lqprnywdbv7vqjle6uuh.jpg",
-          public_id: "lqprnywdbv7vqjle6uuh"
+            "https://res.cloudinary.com/dmxuerbxv/image/upload/v1578250326/n5jlsqihiynsp7ca6gvu.jpg",
+          public_id: "n5jlsqihiynsp7ca6gvu"
         },
         {
           url:
-            "https://res.cloudinary.com/dmxuerbxv/image/upload/v1578074125/nywcxmdhspmw5dak0kjz.jpg",
-          public_id: "nywcxmdhspmw5dak0kjz"
-        },
-        {
-          url:
-            "https://res.cloudinary.com/dmxuerbxv/image/upload/v1578074127/cm3fkcfyafqwtn0q55xf.jpg",
-          public_id: "cm3fkcfyafqwtn0q55xf"
+            "https://res.cloudinary.com/dmxuerbxv/image/upload/v1578250362/k0bz85um5g0zhgrtvw4v.jpg",
+          public_id: "k0bz85um5g0zhgrtvw4v"
         }
       ]
     };
 
     campgroundObj.location = state;
-    campgroundObj.placeName = city;
+    campgroundObj.place_name = city;
 
     campgroundObj.geometry = {
       type: "Point",
       coordinates: [longitude, latitude]
     };
     let campground = await Campground.create(campgroundObj);
-    campground.propreties.description = `<h5><img src='${campground.images[0].url}'><a href='/campgrounds/${campground.id}'>${name}</a></h5><strong>${campground.price}</strong>$ per night<br>${city}, ${state}`;
+    campground.properties.description = `<h5><img src='${campground.images[0].url}' style="max-width: 220px;"><br><a href='/campgrounds/${campground.id}'>${name}</a></h5><strong>${campground.price}</strong>$ per night<br>${city}, ${state}`;
     // create commentsNumber comments
     for (let n of new Array(commentsNumber)) {
       const comment = {
         text: faker.lorem.words(5),
-        rating: Math.round(Math.random() * 5),
+        rating: Math.round(Math.random() * 5) + 1,
         author
       };
       campground.comments.push(await Comment.create(comment));

@@ -20,7 +20,7 @@ new mapboxgl.Marker(el)
   .setPopup(
     new mapboxgl.Popup({ offset: 25 })
       // add popups which display the name of the campground and of the location
-      .setHTML(campground.propreties.description)
+      .setHTML(campground.properties.description)
   )
   .addTo(map);
 

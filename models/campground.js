@@ -7,12 +7,12 @@ const campgroudSchema = new mongoose.Schema({
   price: String,
   description: String,
   location: String,
-  placeName: String,
+  place_name: String,
   geometry: {
     coordinates: { type: [Number], require: true },
     type: { type: String, enum: ["Point"] }
   },
-  propreties: {
+  properties: {
     description: String
   },
   author: {
