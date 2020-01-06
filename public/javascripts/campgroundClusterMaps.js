@@ -6,18 +6,21 @@ var map = new mapboxgl.Map({
   container: "map",
   style: isLanding
     ? "mapbox://styles/nicktay/ck3amm1ti0idd1co986dq099f"
-    : "mapbox://styles/mapbox/streets-v11",
+    : // "mapbox://styles/mapbox/streets-v11",
+      "mapbox://styles/nicktay/ck52xo27i147a1cmihrlmbza8",
   center: [-94.955795, 40.764287],
   zoom: 3
 });
 
-// add search bar
-map.addControl(
-  new MapboxGeocoder({
-    accessToken: mapboxgl.accessToken,
-    mapboxgl
-  })
-);
+if (!isLanding) {
+  // add search bar
+  map.addControl(
+    new MapboxGeocoder({
+      accessToken: mapboxgl.accessToken,
+      mapboxgl
+    })
+  );
+}
 
 // when the map has completed the loading
 map.on("load", function() {
@@ -73,22 +76,24 @@ map.on("load", function() {
       "circle-stroke-color": "#fff"
     }
   });
-  // when the user clicks on an unclustered-point
-  map.on("click", "unclustered-point", function(e) {
-    var coordinates = e.features[0].geometry.coordinates;
-    var description = e.features[0].properties.description;
-    console.log(e.features);
+  if (!isLanding) {
+    // when the user clicks on an unclustered-point
+    map.on("click", "unclustered-point", function(e) {
+      var coordinates = e.features[0].geometry.coordinates;
+      var description = e.features[0].properties.description;
+      console.log(e.features);
 
-    while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
-      coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
-    }
+      while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+        coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+      }
 
-    // show a popup over that point with properties.description as content
-    new mapboxgl.Popup()
-      .setLngLat(coordinates)
-      .setHTML(description)
-      .addTo(map);
-  });
+      // show a popup over that point with properties.description as content
+      new mapboxgl.Popup()
+        .setLngLat(coordinates)
+        .setHTML(description)
+        .addTo(map);
+    });
+  }
 
   // when the user clicks a cluster
   map.on("click", "clusters", function(e) {

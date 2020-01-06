@@ -83,6 +83,7 @@ body {
 
 /* map style */
 #map {
+  opacity: 0.85;
   width: 60%;
   height: 400px;
   margin: 40px auto;

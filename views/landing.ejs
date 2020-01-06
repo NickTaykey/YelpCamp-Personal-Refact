@@ -8,25 +8,8 @@
       integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
       crossorigin="anonymous"
     />
+    <% include ./partials/includeMapbox %>
     <link rel="stylesheet" href="/stylesheet/landing.css" />
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <!-- SERVE PER ESTENDERE LA COMPATIBILITA' DEL NOSTRO CODICE ANCHE A BROWSER VECCHI -->
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"
-      type="text/javascript"
-      async
-    ></script>
-    <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v1.4.1/mapbox-gl.js"></script>
-    <link
-      href="https://api.mapbox.com/mapbox-gl-js/v1.6.1/mapbox-gl.css"
-      rel="stylesheet"
-    />
-    <link
-      rel="stylesheet"
-      href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.4.2/mapbox-gl-geocoder.css"
-      type="text/css"
-    />
-    <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.4.2/mapbox-gl-geocoder.min.js"></script>
     <title>YelpCamp</title>
   </head>
 
@@ -47,7 +30,7 @@
     <!-- INTESTAZIONE DELLA LANDING PAGE -->
     <div id="landing-header">
       <h1>Welcome On YelpCamp</h1>
-      <div id="map" style=""></div>
+      <div id="map"></div>
       <a href="/campgrounds" class="btn btn-lg btn-success"
         >See All Campgrounds</a
       >

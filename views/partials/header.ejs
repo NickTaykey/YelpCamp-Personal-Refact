@@ -17,38 +17,8 @@
       src="https://kit.fontawesome.com/f463be6819.js"
       crossorigin="anonymous"
     ></script>
-
-    <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v1.4.1/mapbox-gl.js"></script>
-    <link
-      href="https://api.mapbox.com/mapbox-gl-js/v1.6.1/mapbox-gl.css"
-      rel="stylesheet"
-    />
-    <link
-      rel="stylesheet"
-      href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.4.2/mapbox-gl-geocoder.css"
-      type="text/css"
-    />
-    <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.4.2/mapbox-gl-geocoder.min.js"></script>
-    <link rel="stylesheet" href="/stylesheet/starbility.min.css" />
-
-    <!-- CUSTOM CSS -->
-    <link rel="stylesheet" type="text/css" href="/stylesheet/main.css" />
-    <link rel="stylesheet" type="text/css" href="/stylesheet/form.css" />
-    <link rel="stylesheet" type="text/css" href="/stylesheet/index.css" />
-    <link rel="stylesheet" type="text/css" href="/stylesheet/show.css" />
+    <% include ./includeMapbox %>
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-  </head>
-
-  <body>
-    <% include ./navbar %>
-    <!-- 
-        QUI MOSTRIAMO I MESSAGGI DI ERRORE CHE ABBIAMO PASSATO CON FLASH ALLE ROUTE CHE POI LI PASSANO
-        AL TEMPLATE, IN TUTTI I TEMPLATES ABBIAMO INCLUSO L'HEADER
-    -->
-    <!-- CENTRIAMO IN ORIZZONTALE I MESSAGGI DI ERRORE CON UN CONTAINER-->
-    <div class="container">
-      <% include ./flash-messages %>
-    </div>
-  </body>
-</html>
+    <!-- CUSTOM CSS -->
+    <link rel="stylesheet" href="/stylesheet/starbility.min.css" />
