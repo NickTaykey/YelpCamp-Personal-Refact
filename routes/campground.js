@@ -1,19 +1,14 @@
 // PACKAGES
 const express = require("express"),
   router = express.Router(),
+  // config obj for multer-cloudinary package (WE DO NOT NEED CLOUDINARY HERE)
+  { storage, cloudinary } = require("../cloudinary"),
   multer = require("multer"),
-  cloudinary = require("cloudinary"),
   mapbox = require("@mapbox/mapbox-sdk/services/geocoding");
 
 // MULTER CONFIG
-const upload = multer({ dest: "uploads/" });
-// CLOUDINARY CONFIG
-cloudinary.config({
-  cloud_name: "dmxuerbxv",
-  api_key: "529692727915557",
-  api_secret: process.env.CLOUDINARY_SECRET
-});
-// MAPBOX CONFIG
+const upload = multer({ storage });
+// MAPBOX CONFIG with the new storage engine (multer-cloudinary)
 let geocodeClient = mapbox({ accessToken: process.env.MAPBOX_TOKEN });
 
 // MODELS
@@ -24,9 +19,7 @@ const Campground = require("../models/campground"),
 // MIDDLEWARE
 const {
     checkUserOwnership,
-    validateImgs,
     destroyFormCookies,
-    deleteImages,
     validateCampground,
     isLoggedIn,
     checkCampground
@@ -75,7 +68,6 @@ router.post(
   upload.array("images", 4),
   asyncErrorHandler(validateCampground),
   // validateLocation,
-  validateImgs,
   asyncErrorHandler(async (req, res, next) => {
     let { name, description, price, location } = req.body;
     const { _id } = await User.findOne({ username: req.user.username });
@@ -89,8 +81,8 @@ router.post(
       author: { username: req.user.username, _id }
     };
     newCampGround.images = [];
-    for (const file of req.files) {
-      let img = await cloudinary.v2.uploader.upload(file.path);
+    for (const img of req.files) {
+      // remove upload images lines because the images has already been uploaded by multer-cloudinary
       newCampGround.images.push({
         url: img.secure_url,
         public_id: img.public_id
@@ -113,8 +105,7 @@ router.post(
     req.session.success = `${newCamp.name} successfully created`;
     res.redirect("/campgrounds");
     next();
-  }),
-  deleteImages
+  })
 );
 
 // EDIT
@@ -136,7 +127,6 @@ router.put(
   upload.array("images", 4),
   asyncErrorHandler(validateCampground),
   // validateLocation,
-  validateImgs,
   asyncErrorHandler(async (req, res, next) => {
     let campground = await Campground.findById(req.params.id),
       bodyCampground = req.body.campground,
@@ -155,10 +145,10 @@ router.put(
       }
     }
     for (const img of req.files) {
-      let cloudImg = await cloudinary.v2.uploader.upload(img.path);
+      // cloudinary uploaded commented out ALREADY DONE BY multer-cloudinary
       campground.images.push({
-        url: cloudImg.secure_url,
-        public_id: cloudImg.public_id
+        url: img.secure_url,
+        public_id: img.public_id
       });
     }
     // checkout if the location has changes
@@ -184,8 +174,7 @@ router.put(
     req.session.success = "Campground successfully updated";
     res.redirect(`/campgrounds/${req.params.id}`);
     next();
-  }),
-  deleteImages
+  })
 );
 
 // DESTROY

@@ -9,13 +9,10 @@ const Campground = require("../models/campground"),
 const formFields = ["name", "price", "description", "location"];
 
 let isLoggedIn = (req, res, next) => {
-    if (req.isAuthenticated()) return typeof next === "boolean" ? next : next();
-    req.session.error = "You need to be logged in to do that";
-    res.redirect("/login");
-  },
-  deleteImages = (req, res, next) => {
-    for (const file of req.files) fs.unlinkSync(file.path);
-  };
+  if (req.isAuthenticated()) return typeof next === "boolean" ? next : next();
+  req.session.error = "You need to be logged in to do that";
+  res.redirect("/login");
+};
 let middlewareOBJ = {
   async checkUserOwnership(req, res, next) {
     if (isLoggedIn(req, res, true)) {
@@ -33,31 +30,6 @@ let middlewareOBJ = {
       res.redirect("back");
     }
   },
-  validateImgs(req, res, next) {
-    const context = req.method === "PUT" ? true : false;
-    if (req.files.length) {
-      for (const file of req.files) {
-        if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/i)) {
-          const campgroud = context ? req.body.campground : req.body;
-          formFields.forEach(n => res.cookie(n, campgroud[n]));
-          if (context)
-            req.body.deleteImages.forEach((delImg, i) =>
-              res.cookie(`deleteImg${i}`, delImg)
-            );
-          deleteImages(req, res, next);
-          req.session.error =
-            "Only image files jpg, jpeg, png, or gif are allowed! ";
-
-          return res.redirect("back");
-        }
-      }
-      next();
-    } else if (!context) {
-      formFields.forEach(n => res.cookie(n, req.body[n]));
-      req.session.error = "You have to provvide at least one image! ";
-      return res.redirect("back");
-    } else next();
-  },
   destroyFormCookies(req, res, next) {
     const delImgs = [];
     formFields.forEach(n => res.clearCookie(n));
@@ -72,7 +44,6 @@ let middlewareOBJ = {
     formFields.forEach(n => (res.locals[n] = req.cookies[n]));
     next();
   },
-  deleteImages,
   isLoggedIn,
   // middleware to validate a campground
   validateCampground(req, res, next) {
@@ -99,7 +70,6 @@ let middlewareOBJ = {
     formFields.forEach(n => {
       if (fields[n]) res.cookie(n, fields[n]);
     });
-    deleteImages(req, res, next);
     req.session.error = msg;
     res.redirect("back");
   },
