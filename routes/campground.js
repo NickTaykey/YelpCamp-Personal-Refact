@@ -53,7 +53,7 @@ router.get(
   asyncErrorHandler(async (req, res, next) => {
     const id = req.params.id;
     let campground = await Campground.findById(id).populate({
-      path: "comments",
+      path: "comments author",
       options: { sort: "-_id" }
     });
     let floorRating = await campground.calcAvgRating();
@@ -70,7 +70,6 @@ router.post(
   // validateLocation,
   asyncErrorHandler(async (req, res, next) => {
     let { name, description, price, location } = req.body;
-    const { _id } = await User.findOne({ username: req.user.username });
     let newCampGround = {
       name,
       description,
@@ -78,7 +77,7 @@ router.post(
       location,
       geometry: {},
       propeties: {},
-      author: { username: req.user.username, _id }
+      author: req.user._id
     };
     newCampGround.images = [];
     for (const img of req.files) {

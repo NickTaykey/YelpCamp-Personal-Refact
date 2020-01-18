@@ -41,9 +41,7 @@ Router.post(
     let campground = await Campground.findById(req.params.id),
       comment = await Comment.create(req.body.comment);
 
-    const { _id } = await User.findOne({ username: req.user.username });
-    comment.author._id = _id;
-    comment.author.username = req.user.username;
+    comment.author = req.user._id;
     await comment.save();
     campground.comments.push(comment);
     await campground.save();

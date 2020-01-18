@@ -3,11 +3,8 @@ const commentSchema = new mongoose.Schema({
   text: String,
   rating: Number,
   author: {
-    _id: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User"
-    },
-    username: String
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User"
   }
 });
 

@@ -31,7 +31,8 @@ Router.get("/register", (req, res, next) => res.render("register"));
 // SIGNUP CODE
 Router.post("/register", async (req, res, next) => {
   const newUser = new User({
-    username: req.body.username
+    username: req.body.username,
+    email: req.body.email
   });
   try {
     let user = await User.register(newUser, req.body.password);

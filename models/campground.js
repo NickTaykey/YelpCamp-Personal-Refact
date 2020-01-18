@@ -16,11 +16,8 @@ const campgroudSchema = new mongoose.Schema({
     description: String
   },
   author: {
-    _id: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User"
-    },
-    username: String
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User"
   },
   comments: [
     {

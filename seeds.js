@@ -5,6 +5,7 @@ const Comment = require("./models/comment");
 const User = require("./models/user");
 const data = require("./campgroundGeoData");
 const cities = require("./cities");
+const author = "5e230363211e250d1aba35cc";
 
 const campgroundNumber = 40;
 const commentsNumber = 20;
@@ -15,11 +16,6 @@ module.exports = async () => {
   for (let i of new Array(campgroundNumber)) {
     let num = Math.round(Math.random() * 133);
     const { name, description } = data[num];
-    let { username, _id } = await User.findOne({ username: "nick" });
-    const author = {
-      username,
-      _id
-    };
     // find random city
     num = Math.round(Math.random() * 998);
     const { city, longitude, latitude, state } = cities[num];

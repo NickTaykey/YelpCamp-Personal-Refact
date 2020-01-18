@@ -38,7 +38,7 @@ app.use(
 app.use(cookieParser());
 
 // DB CONNECTION
-mongoose.connect("mongodb://localhost:27017/YelpCamp_clusters_rating", {
+mongoose.connect("mongodb://localhost:27017/YelpCamp_improve_auth", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useCreateIndex: true,
@@ -57,16 +57,16 @@ passport.deserializeUser(User.deserializeUser());
 
 // TEMPLATE CONFIG MIDDLEWARE
 app.use((req, res, next) => {
-  res.locals.currentUser = req.user;
   res.locals.error = req.session.error;
   res.locals.success = req.session.success;
   delete req.session.error;
   delete req.session.success;
   /* mantiene questo utente loggato di default */
-  req.user = {
+  /* req.user = {
     _id: "5e0a5dbf787e9706c984c95f",
     username: "nick"
   };
+  */
   res.locals.currentUser = req.user;
   next();
 });
