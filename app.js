@@ -10,8 +10,9 @@ const express = require("express"),
   expressSession = require("express-session"),
   cookieParser = require("cookie-parser"),
   engine = require("ejs-mate"),
-  methodOverride = require("method-override");
-
+  methodOverride = require("method-override"),
+  favicon = require("serve-favicon"),
+  path = require("path");
 // require("./seeds")();
 
 // MODELS
@@ -36,6 +37,7 @@ app.use(
   })
 );
 app.use(cookieParser());
+app.use(favicon(path.join(__dirname, "public", "favicon.ico")));
 
 // DB CONNECTION
 mongoose.connect("mongodb://localhost:27017/YelpCamp_improve_auth", {

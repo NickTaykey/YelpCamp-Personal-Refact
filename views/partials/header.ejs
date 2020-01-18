@@ -2,6 +2,11 @@
 <html>
   <head>
     <title>YelpCamp</title>
+    <!-- anche se a volte sembra che non serva includere la favicon nel head a volte è meglio includerla
+    perchè non è detto che il browser la richieda in automatico e una vecchia versione potrebbe essere nella
+    cache quindi è utile specificare in query string v=1.1 che significa che deve essere richiesta la favicon 
+    nuova e non essere usata quella nella cache -->
+    <link rel="icon" href="favicon.ico?v=1.1" />
     <!-- Latest compiled and minified CSS -->
     <link
       rel="stylesheet"
@@ -22,3 +27,5 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <!-- CUSTOM CSS -->
     <link rel="stylesheet" href="/stylesheet/starbility.min.css" />
+  </head>
+</html>
