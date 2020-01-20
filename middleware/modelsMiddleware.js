@@ -1,6 +1,3 @@
-// PACAKGES
-const fs = require("fs");
-
 // MODELS
 const Campground = require("../models/campground"),
   Comment = require("../models/comment");
@@ -9,27 +6,29 @@ const Campground = require("../models/campground"),
 const formFields = ["name", "price", "description", "location"];
 
 let isLoggedIn = (req, res, next) => {
-  if (req.isAuthenticated()) return typeof next === "boolean" ? next : next();
+  if (req.isAuthenticated()) return next();
   req.session.url = req.originalUrl;
   req.session.error = "You need to be logged in to do that";
   res.redirect("/login");
 };
 let middlewareOBJ = {
   async checkUserOwnership(req, res, next) {
-    if (isLoggedIn(req, res, true)) {
-      let campgroud = await Campground.findById(req.params.id);
-      if (campgroud && campgroud.author._id.equals(req.user._id)) return next();
-      req.session.error = "You don't have the permissions to do that";
-      res.redirect("back");
+    let campground = await Campground.findById(req.params.id);
+    if (campground && campground.author.equals(req.user._id)) {
+      res.locals.campground = campground;
+      return next();
     }
+    req.session.error = "You don't have the permissions to do that";
+    res.redirect("back");
   },
   async checkCommentOwnership(req, res, next) {
-    if (isLoggedIn(req, res, true)) {
-      let comment = await Comment.findById(req.params.comment_id);
-      if (comment && comment.author._id.equals(req.user._id)) return next();
-      req.session.error = "you don't have the permision to do that";
-      res.redirect("back");
+    let comment = await Comment.findById(req.params.comment_id);
+    if (comment && comment.author.equals(req.user._id)) {
+      res.locals.comment = comment;
+      return next();
     }
+    req.session.error = "you don't have the permision to do that";
+    res.redirect("back");
   },
   destroyFormCookies(req, res, next) {
     const delImgs = [];
@@ -80,8 +79,8 @@ let middlewareOBJ = {
     res.redirect("back");
   },
   async checkCampground(req, res, next) {
-    let campgroud = await Campground.findById(req.params.id);
-    if (campgroud) return next();
+    let campground = await Campground.findById(req.params.id);
+    if (campground) return next();
     req.session.error = "campground not found";
     res.redirect("/campgrounds");
   }

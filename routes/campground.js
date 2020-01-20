@@ -110,24 +110,26 @@ router.post(
 // EDIT
 router.get(
   "/:id/edit",
+  isLoggedIn,
   checkCampground,
-  checkUserOwnership,
+  asyncErrorHandler(checkUserOwnership),
   destroyFormCookies,
   asyncErrorHandler(async (req, res, next) => {
-    let campground = await Campground.findById(req.params.id);
-    res.render("campgrounds/edit", { campground });
+    res.render("campgrounds/edit", { campground: res.locals.campground });
   })
 );
 
 // UPDATE
 router.put(
   "/:id",
-  checkUserOwnership,
+  isLoggedIn,
+  checkCampground,
+  asyncErrorHandler(checkUserOwnership),
   upload.array("images", 4),
   asyncErrorHandler(validateCampground),
   // validateLocation,
   asyncErrorHandler(async (req, res, next) => {
-    let campground = await Campground.findById(req.params.id),
+    let { campground } = res.locals,
       bodyCampground = req.body.campground,
       deleteImages = req.body.deleteImages;
     if (deleteImages) {
@@ -179,9 +181,12 @@ router.put(
 // DESTROY
 router.delete(
   "/:id",
-  checkUserOwnership,
+  isLoggedIn,
+  checkCampground,
+  asyncErrorHandler(checkUserOwnership),
   asyncErrorHandler(async (req, res, next) => {
-    let campground = await Campground.findByIdAndRemove(req.params.id);
+    let { campground } = res.locals;
+    await campground.remove();
     for (const id of campground.comments) await Comment.findByIdAndRemove(id);
     for (const img of campground.images)
       await cloudinary.v2.uploader.destroy(img.public_id);

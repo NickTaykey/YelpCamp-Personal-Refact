@@ -4,8 +4,7 @@ const express = require("express"),
 
 // MODELS
 const Campground = require("../models/campground"),
-  Comment = require("../models/comment"),
-  User = require("../models/user");
+  Comment = require("../models/comment");
 
 // MIDDLEWARE
 const {
@@ -54,12 +53,11 @@ Router.post(
 Router.get(
   "/:comment_id/edit",
   checkCampground,
-  checkCommentOwnership,
+  asyncErrorHandler(checkCommentOwnership),
   asyncErrorHandler(async (req, res, next) => {
-    let comment = await Comment.findById(req.params.comment_id);
     res.render("comments/edit", {
       campground_id: req.params.id,
-      comment
+      comment: res.locals.comment
     });
   })
 );
@@ -68,7 +66,7 @@ Router.get(
 Router.put(
   "/:comment_id",
   checkCampground,
-  checkCommentOwnership,
+  asyncErrorHandler(checkCommentOwnership),
   validateComment,
   asyncErrorHandler(async (req, res, next) => {
     await Comment.findByIdAndUpdate(req.params.comment_id, req.body.comment);
@@ -81,9 +79,10 @@ Router.put(
 Router.delete(
   "/:comment_id",
   checkCampground,
-  checkCommentOwnership,
+  asyncErrorHandler(checkCommentOwnership),
   asyncErrorHandler(async (req, res, next) => {
-    await Comment.findByIdAndRemove(req.params.comment_id);
+    let { comment } = res.locals;
+    await comment.remove();
     req.session.success = "comment successfully deleted";
     res.redirect(`/campgrounds/${req.params.id}`);
   })

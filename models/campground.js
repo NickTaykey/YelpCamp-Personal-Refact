@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const mongoosePaginate = require("mongoose-paginate");
 
-const campgroudSchema = new mongoose.Schema({
+const campgroundSchema = new mongoose.Schema({
   name: String,
   images: [{ url: String, public_id: String }],
   price: String,
@@ -28,10 +28,10 @@ const campgroudSchema = new mongoose.Schema({
   avgRating: { type: Number, default: 0 }
 });
 
-campgroudSchema.plugin(mongoosePaginate);
+campgroundSchema.plugin(mongoosePaginate);
 
 // method to calculate the average rating
-campgroudSchema.methods.calcAvgRating = async function() {
+campgroundSchema.methods.calcAvgRating = async function() {
   let stars = 0,
     floorRating = 0;
   if (this.comments.length) {
@@ -43,4 +43,4 @@ campgroudSchema.methods.calcAvgRating = async function() {
   return floorRating;
 };
 
-module.exports = mongoose.model("Campground", campgroudSchema);
+module.exports = mongoose.model("Campground", campgroundSchema);
