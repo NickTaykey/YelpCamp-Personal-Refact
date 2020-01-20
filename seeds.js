@@ -5,7 +5,7 @@ const Comment = require("./models/comment");
 const User = require("./models/user");
 const data = require("./campgroundGeoData");
 const cities = require("./cities");
-const author = "5e230363211e250d1aba35cc";
+const author = "5e24b3523ea92f052b463f79";
 
 const campgroundNumber = 40;
 const commentsNumber = 20;

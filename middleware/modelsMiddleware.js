@@ -10,6 +10,7 @@ const formFields = ["name", "price", "description", "location"];
 
 let isLoggedIn = (req, res, next) => {
   if (req.isAuthenticated()) return typeof next === "boolean" ? next : next();
+  req.session.url = req.originalUrl;
   req.session.error = "You need to be logged in to do that";
   res.redirect("/login");
 };
