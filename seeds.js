@@ -2,10 +2,9 @@ require("dotenv").config();
 const faker = require("faker");
 const Campground = require("./models/campground");
 const Comment = require("./models/comment");
-const User = require("./models/user");
 const data = require("./campgroundGeoData");
 const cities = require("./cities");
-const author = "5e24b3523ea92f052b463f79";
+const author = "5e3c6c0163eecf05f01c07f1";
 
 const campgroundNumber = 40;
 const commentsNumber = 20;
@@ -28,13 +27,15 @@ module.exports = async () => {
       images: [
         {
           url:
-            "https://res.cloudinary.com/dmxuerbxv/image/upload/v1578250326/n5jlsqihiynsp7ca6gvu.jpg",
-          public_id: "n5jlsqihiynsp7ca6gvu"
+            "https://res.cloudinary.com/dmxuerbxv/image/upload/v1581016750/YelpCamp/photo-1455763916899-e8b50eca9967_uofry2.jpg"
         },
         {
           url:
-            "https://res.cloudinary.com/dmxuerbxv/image/upload/v1578250362/k0bz85um5g0zhgrtvw4v.jpg",
-          public_id: "k0bz85um5g0zhgrtvw4v"
+            "https://res.cloudinary.com/dmxuerbxv/image/upload/v1581016721/YelpCamp/photo-1504851149312-7a075b496cc7_w3wii1.jpg"
+        },
+        {
+          url:
+            "https://res.cloudinary.com/dmxuerbxv/image/upload/v1581016750/YelpCamp/photo-1455763916899-e8b50eca9967_uofry2.jpg"
         }
       ]
     };

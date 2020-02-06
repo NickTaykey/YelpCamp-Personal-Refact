@@ -1,17 +1,17 @@
 // MODELS
-const Campground = require("../models/campground"),
-  Comment = require("../models/comment");
+const Campground = require("../models/campground");
+const Comment = require("../models/comment");
 
 // campground fields
 const formFields = ["name", "price", "description", "location"];
 
-let isLoggedIn = (req, res, next) => {
-  if (req.isAuthenticated()) return next();
-  req.session.url = req.originalUrl;
-  req.session.error = "You need to be logged in to do that";
-  res.redirect("/login");
-};
-let middlewareOBJ = {
+const middlewareOBJ = {
+  isLoggedIn: (req, res, next) => {
+    if (req.isAuthenticated()) return next();
+    req.session.url = req.originalUrl;
+    req.session.error = "You need to be logged in to do that";
+    res.redirect("/login");
+  },
   async checkUserOwnership(req, res, next) {
     let campground = await Campground.findById(req.params.id);
     if (campground && campground.author.equals(req.user._id)) {
@@ -44,8 +44,6 @@ let middlewareOBJ = {
     formFields.forEach(n => (res.locals[n] = req.cookies[n]));
     next();
   },
-  isLoggedIn,
-  // middleware to validate a campground
   validateCampground(req, res, next) {
     const campground = req.method === "PUT" ? req.body.campground : req.body,
       errors = [],

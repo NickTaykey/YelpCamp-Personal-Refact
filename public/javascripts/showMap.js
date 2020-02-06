@@ -24,8 +24,4 @@ new mapboxgl.Marker(el)
   )
   .addTo(map);
 
-/* let canvas = document.getElementsByClassName("mapboxgl-canvas")[0];
-canvas.style.display = "block;";
-canvas.style.width = "600px!important;"; */
-
 map.resize();

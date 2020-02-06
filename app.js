@@ -1,27 +1,27 @@
 require("dotenv").config();
 
 // PACKAGES
-const express = require("express"),
-  app = express(),
-  bodyParser = require("body-parser"),
-  mongoose = require("mongoose"),
-  passport = require("passport"),
-  LocalStrategy = require("passport-local"),
-  expressSession = require("express-session"),
-  cookieParser = require("cookie-parser"),
-  engine = require("ejs-mate"),
-  methodOverride = require("method-override"),
-  favicon = require("serve-favicon"),
-  path = require("path");
+const express = require("express");
+const app = express();
+const bodyParser = require("body-parser");
+const mongoose = require("mongoose");
+const passport = require("passport");
+const LocalStrategy = require("passport-local");
+const expressSession = require("express-session");
+const cookieParser = require("cookie-parser");
+const engine = require("ejs-mate");
+const methodOverride = require("method-override");
+const favicon = require("serve-favicon");
+const path = require("path");
 // require("./seeds")();
 
 // MODELS
 const User = require("./models/user");
 
 // ROUTES
-const indexRoutes = require("./routes/index"),
-  commentRoutes = require("./routes/comment"),
-  campgroundRoutes = require("./routes/campground");
+const indexRoutes = require("./routes/index");
+const commentRoutes = require("./routes/comments");
+const campgroundRoutes = require("./routes/campgrounds");
 
 // MIDDLEWARE CONFIG
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -40,7 +40,7 @@ app.use(cookieParser());
 app.use(favicon(path.join(__dirname, "public", "favicon.ico")));
 
 // DB CONNECTION
-mongoose.connect("mongodb://localhost:27017/YelpCamp_improve_auth", {
+mongoose.connect("mongodb://localhost:27017/YelpCamp_user_profile", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useCreateIndex: true,
