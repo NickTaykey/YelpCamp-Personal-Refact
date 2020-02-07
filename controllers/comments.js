@@ -9,7 +9,7 @@ module.exports = {
   createComment: async (req, res, next) => {
     let campground = await Campground.findById(req.params.id),
       comment = await Comment.create(req.body.comment);
-
+    comment.campgroundName = campground.name;
     comment.author = req.user._id;
     await comment.save();
     campground.comments.push(comment);

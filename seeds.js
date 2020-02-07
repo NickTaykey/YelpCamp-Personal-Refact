@@ -54,6 +54,7 @@ module.exports = async () => {
       const comment = {
         text: faker.lorem.words(5),
         rating: Math.round(Math.random() * 5) + 1,
+        campgroundName: campground.name,
         author
       };
       campground.comments.push(await Comment.create(comment));

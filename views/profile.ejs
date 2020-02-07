@@ -1,0 +1,68 @@
+<% include ./partials/header %>
+<link rel="stylesheet" type="text/css" href="/stylesheet/show.css" />
+<link rel="stylesheet" type="text/css" href="/stylesheet/profile.css" />
+<% include ./partials/close_header %>
+<div class="container">
+  <div class="row">
+    <div class="col-xs-10 col-lg-10">
+      <div class="thumbnail">
+        <div class="caption">
+          <div id="data">
+            <h2><%= user.username %>'s profile</h2>
+            <p><%= user.email %></p>
+          </div>
+          <div id="controllers">
+            <button
+              class="btn btn-primary <% if(!campgrounds.length){ %>disabled<% } %>"
+              id="campgrounds-btn"
+            >
+              <%= campgrounds.length %> campgrounds</button
+            ><button
+              class="btn btn-success  <% if(!comments.length){ %>disabled<% } %>"
+              id="comments-btn"
+            >
+              <%= comments.length %> comments
+            </button>
+          </div>
+
+          <div id="campgrounds" style="display: none;">
+            <% campgrounds.forEach(function(c, j){ %>
+            <div class="campground">
+              <h3><a href="/campgrounds/<%= c._id %>"><%= c.name %></a></h3>
+              <strong><%= c.location %></strong>
+              <small><%= c.price %> $ / night</small>
+              <div class="info avg-rating">
+                <strong id="avg-rat-heading">average rating: </strong>
+                <% for(var i = 0; i<5; i++){ %> <% if(avgRatings[j]>i){ %>
+                <i class="fas fa-star"></i>
+                <% } else if((c.avgRating-i)>0 && (c.avgRating-i)<1) { %>
+                <i class="fas fa-star-half-alt"></i>
+                <% } else { %>
+                <i class="far fa-star"></i>
+                <% } %> <% } %><% if(campgrounds[j+1]){ %>
+                <hr />
+                <% } %>
+              </div>
+            </div>
+            <% }) %>
+          </div>
+          <div id="comments" style="display: none;">
+            <% comments.forEach(function(c, j){ %>
+            <strong><%= c.campgroundName %></strong>
+            <p
+              class="starability-result"
+              data-rating="<%= c.rating %>"
+              style="margin: 10px 0;"
+            ></p>
+            <p><%= c.text.slice(0, 60) %> ...</p>
+            <% if(comments[j+1]){ %>
+            <hr />
+            <% } %> <% }) %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<% include partials/footer %>
+<script src="/javascripts/profile.js"></script>

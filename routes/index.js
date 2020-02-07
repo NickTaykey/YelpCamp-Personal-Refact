@@ -3,7 +3,8 @@ const express = require("express");
 const Router = express.Router();
 
 // MIDDLEWARES
-const { asyncErrorHandler } = require("../middleware/index");
+const { asyncErrorHandler } = require("../middleware");
+const { checkIfUserExists } = require("../middleware/modelsMiddleware");
 
 // CONTROLLERS
 const {
@@ -12,7 +13,8 @@ const {
   loginPost,
   registerGet,
   registerPost,
-  logout
+  logout,
+  profileGet
 } = require("../controllers");
 
 // LANDING
@@ -32,5 +34,12 @@ Router.post("/login", asyncErrorHandler(loginPost));
 
 // LOGOUT
 Router.get("/logout", logout);
+
+// PROFILE GET
+Router.get(
+  "/users/:username",
+  asyncErrorHandler(checkIfUserExists),
+  asyncErrorHandler(profileGet)
+);
 
 module.exports = Router;

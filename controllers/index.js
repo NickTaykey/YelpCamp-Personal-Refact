@@ -2,6 +2,7 @@
 const passport = require("passport");
 // MODELS
 const User = require("../models/user");
+const Comment = require("../models/comment");
 const Campground = require("../models/campground");
 module.exports = {
   landing: async (req, res, next) => {
@@ -67,5 +68,22 @@ module.exports = {
     req.logout();
     req.session.success = "You are logged out!";
     res.redirect("/campgrounds");
+  },
+  profileGet: async (req, res, next) => {
+    const user = res.locals.user;
+    let campgrounds = await Campground.find({}, null, { sort: { _id: -1 } })
+      .where("author")
+      .equals(user._id)
+      .populate("comments")
+      .exec();
+    let comments = await Comment.find({}, null, { sort: { _id: -1 } })
+      .where("author")
+      .equals(user._id)
+      .exec();
+    const avgRatings = [];
+    for (let c of campgrounds) {
+      avgRatings.push(await c.calcAvgRating());
+    }
+    res.render("profile", { campgrounds, comments, avgRatings });
   }
 };

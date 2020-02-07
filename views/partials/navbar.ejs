@@ -31,6 +31,7 @@
         <!-- SE METTIAMO # COME VALORE AD href IN UN LINK, QUESTO NON PORTA DA NESSUNA PARTE,
                          NON FA NESSUNA RICHIESTA -->
         <li><a href="#">Signed In As <%= currentUser.username %></a></li>
+        <li><a href="/users/<%= currentUser.username %>">My Profile</a></li>
         <li><a href="/logout">Logout</a></li>
         <% } %>
       </ul>

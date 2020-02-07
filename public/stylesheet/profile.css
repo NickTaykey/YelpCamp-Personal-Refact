@@ -1,0 +1,26 @@
+.row {
+  display: flex;
+  justify-content: center;
+}
+
+#controllers {
+  display: flex;
+  justify-content: center;
+}
+
+#data {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+#campgrounds-btn,
+#comments-btn {
+  display: inline-block;
+  margin: 0 10px 0 10px;
+  width: 45%;
+}
+
+#campgrounds,
+#comments {
+  margin-top: 40px;
+}

@@ -1,6 +1,7 @@
 // MODELS
 const Campground = require("../models/campground");
 const Comment = require("../models/comment");
+const User = require("../models/user");
 
 // campground fields
 const formFields = ["name", "price", "description", "location"];
@@ -29,6 +30,15 @@ const middlewareOBJ = {
     }
     req.session.error = "you don't have the permision to do that";
     res.redirect("back");
+  },
+  async checkIfUserExists(req, res, next) {
+    let user = await User.findOne({ username: req.params.username });
+    if (user) {
+      res.locals.user = user;
+      return next();
+    }
+    req.session.error = `404 user '${req.params.username}' not found`;
+    res.redirect("/campgrounds");
   },
   destroyFormCookies(req, res, next) {
     const delImgs = [];
