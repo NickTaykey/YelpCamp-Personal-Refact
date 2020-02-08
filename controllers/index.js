@@ -1,5 +1,6 @@
 // PACKAGES
 const passport = require("passport");
+const util = require("util");
 // MODELS
 const User = require("../models/user");
 const Comment = require("../models/comment");
@@ -88,5 +89,33 @@ module.exports = {
   },
   profileEdit(req, res, next) {
     res.render("editProfile");
+  },
+  async profileUpdate(req, res, next) {
+    const { user } = res.locals;
+    const { username, email } = req.body;
+    try {
+      if (username && username.length) user.username = username;
+      if (email && email.length) user.email = email;
+      await user.save();
+    } catch (e) {
+      let msg;
+      if (
+        e.message.includes(
+          "E11000 duplicate key error collection: YelpCamp_user_profile.users index: email_1 dup key:"
+        )
+      ) {
+        msg = "E-mail alerady in use";
+      } else {
+        msg = "Username alerady in use";
+      }
+      req.session.error = msg;
+      return res.redirect(`/users/${req.user.username}/edit`);
+    }
+
+    // ri autentichiamo l'utente (nel caso dello username aggiornato la sessione attuale nn è più valida)
+    const login = util.promisify(req.login.bind(req));
+    await login(user);
+    req.session.success = "profile successfully updated!";
+    res.redirect(`/users/${user.username}/edit`);
   }
 };

@@ -48,6 +48,43 @@ const middlewareOBJ = {
     req.session.error = `You are not authorized to do that`;
     res.redirect("/campgrounds");
   },
+  // PROFILE UPDATE, controlla se la password attuale che l'utente ha inserito è corretta
+  async checkUserPassword(req, res, next) {
+    const { password } = req.body;
+    let { err, user } = await User.authenticate()(req.user.username, password);
+    if (!err && user) {
+      // utente autorizzato
+      return next();
+    }
+    // utente non autorizzato, errore
+    req.session.error = "Wrong password!";
+    res.redirect("back");
+  },
+  // PROFILE UPDATE, setta la nuova password
+  async setNewPassword(req, res, next) {
+    const user = res.locals.user;
+    const { newPassword, confirmPassword } = req.body;
+    let errMsg;
+    // se ci sono entrambe le password le settiamo
+    if (newPassword && confirmPassword) {
+      if (newPassword === confirmPassword) {
+        await user.setPassword(newPassword);
+        res.locals.user = await user.save();
+      } else {
+        errMsg = "The passwords do not match";
+      }
+      // se ne manca una diamo un errore
+    } else if (!newPassword.length && confirmPassword.length) {
+      errMsg = "Missing new password";
+    } else if (newPassword.length && !confirmPassword.length) {
+      errMsg = "Missing password confirmation";
+    }
+    if (errMsg) {
+      req.session.error = errMsg;
+      return res.redirect("back");
+    }
+    next();
+  },
   destroyFormCookies(req, res, next) {
     const delImgs = [];
     formFields.forEach(n => res.clearCookie(n));

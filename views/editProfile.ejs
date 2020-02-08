@@ -2,14 +2,29 @@
 <link rel="stylesheet" type="text/css" href="/stylesheet/show.css" />
 <link rel="stylesheet" type="text/css" href="/stylesheet/profile.css" />
 <link rel="stylesheet" type="text/css" href="/stylesheet/editProfile.css" />
-<% include ./partials/close_header %>
+</head>
+<body>
+<% include ./partials/navbar %>
 <div class="container">
   <div class="row">
     <div class="col-xs-12 col-lg-6">
       <div class="thumbnail">
         <div class="caption">
           <h2>Edit Your Profile</h2>
-          <form action="" method="post">
+          <div class="alert alert-success" role="alert" 
+          <% if(!success){ %>style="display: none;"<% } %>
+          >
+            <%= success %>
+          </div>
+          <div class="alert alert-danger" role="alert" id="error"   
+          <% if(!error){ %>style="display: none;"<% } %>
+          >
+            <%= error %>
+          </div>
+          <form
+            action="/users/<%= currentUser.username %>?_method=PUT"
+            method="post"
+          >
             <div class="form-group">
               <label for="username">Username: </label>
               <input
@@ -75,6 +90,9 @@
                 id="confirmPassword"
                 placeholder="repeat the password"
               />
+            </div>
+            <div class="form-group">
+              <h4 id="pwdStateLabel"></h4>
             </div>
             <input
               class="btn btn-block btn-warning"

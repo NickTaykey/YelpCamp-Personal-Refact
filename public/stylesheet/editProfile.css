@@ -4,3 +4,11 @@ h2 {
   text-align: center;
   margin-bottom: 30px;
 }
+
+/* PASSWORD MATCHING STATE LABEL COLORS */
+.success {
+  color: green;
+}
+.error {
+  color: red;
+}

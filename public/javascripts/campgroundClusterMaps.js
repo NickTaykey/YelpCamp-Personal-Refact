@@ -81,7 +81,6 @@ map.on("load", function() {
     map.on("click", "unclustered-point", function(e) {
       var coordinates = e.features[0].geometry.coordinates;
       var description = e.features[0].properties.description;
-      console.log(e.features);
 
       while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
         coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;

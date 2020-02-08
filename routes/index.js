@@ -7,6 +7,8 @@ const { asyncErrorHandler } = require("../middleware");
 const {
   checkIfUserExists,
   checkUserIdentify,
+  checkUserPassword,
+  setNewPassword,
   isLoggedIn
 } = require("../middleware/modelsMiddleware");
 
@@ -19,7 +21,8 @@ const {
   registerPost,
   logout,
   profileGet,
-  profileEdit
+  profileEdit,
+  profileUpdate
 } = require("../controllers");
 
 // LANDING
@@ -53,6 +56,16 @@ Router.get(
   isLoggedIn,
   asyncErrorHandler(checkUserIdentify),
   profileEdit
+);
+
+// PROFILE UPDATE
+Router.put(
+  "/users/:username",
+  isLoggedIn,
+  asyncErrorHandler(checkUserIdentify),
+  asyncErrorHandler(checkUserPassword),
+  asyncErrorHandler(setNewPassword),
+  asyncErrorHandler(profileUpdate)
 );
 
 module.exports = Router;
