@@ -10,7 +10,7 @@
         -->
 <% if(error && error.length > 0){ %>
 <!-- MOSTRIAMO IL MESSAGGIO DI ERRORE IN UN alert danger QUINDI IN UN CONTENITORE CON SFONDO ROSSO -->
-<div class="alert alert-danger" role="alert">
+<div class="alert alert-danger" role="alert" id="error">
   <%= error %>
 </div>
 <% } %> <% if(success && success.length > 0){ %>

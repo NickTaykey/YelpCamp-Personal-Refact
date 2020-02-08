@@ -85,5 +85,8 @@ module.exports = {
       avgRatings.push(await c.calcAvgRating());
     }
     res.render("profile", { campgrounds, comments, avgRatings });
+  },
+  profileEdit(req, res, next) {
+    res.render("editProfile");
   }
 };

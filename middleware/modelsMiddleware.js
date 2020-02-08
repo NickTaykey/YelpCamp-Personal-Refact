@@ -40,6 +40,14 @@ const middlewareOBJ = {
     req.session.error = `404 user '${req.params.username}' not found`;
     res.redirect("/campgrounds");
   },
+  async checkUserIdentify(req, res, next) {
+    if (req.user.username && req.user.username === req.params.username) {
+      res.locals.user = await User.findById(req.user._id);
+      return next();
+    }
+    req.session.error = `You are not authorized to do that`;
+    res.redirect("/campgrounds");
+  },
   destroyFormCookies(req, res, next) {
     const delImgs = [];
     formFields.forEach(n => res.clearCookie(n));

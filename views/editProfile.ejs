@@ -1,0 +1,91 @@
+<% include ./partials/header %>
+<link rel="stylesheet" type="text/css" href="/stylesheet/show.css" />
+<link rel="stylesheet" type="text/css" href="/stylesheet/profile.css" />
+<link rel="stylesheet" type="text/css" href="/stylesheet/editProfile.css" />
+<% include ./partials/close_header %>
+<div class="container">
+  <div class="row">
+    <div class="col-xs-12 col-lg-6">
+      <div class="thumbnail">
+        <div class="caption">
+          <h2>Edit Your Profile</h2>
+          <form action="" method="post">
+            <div class="form-group">
+              <label for="username">Username: </label>
+              <input
+                class="form-control"
+                type="text"
+                name="username"
+                placeholder="username"
+                id="username"
+                value="<%= user.username %>"
+              />
+            </div>
+            <div class="form-group">
+              <label for="email">E-mail: </label>
+              <input
+                class="form-control"
+                type="email"
+                name="email"
+                placeholder="e-mail"
+                id="email"
+                value="<%= user.email %>"
+              />
+            </div>
+            <div class="form-group">
+              <label for="image"
+                >Profile Image (the actual one will be deleted):</label
+              >
+              <input
+                class="form-control"
+                type="file"
+                name="image"
+                id="image"
+                accept="image/*"
+              />
+            </div>
+            <div class="form-group">
+              <label for="password"
+                >Confirm your password, Required for any change!</label
+              >
+              <input
+                class="form-control"
+                type="password"
+                name="password"
+                id="password"
+                placeholder="password"
+              />
+            </div>
+            <div class="form-group">
+              <label for="newPassword">Type a new password:</label>
+              <input
+                class="form-control"
+                type="password"
+                name="newPassword"
+                id="newPassword"
+                placeholder="new password"
+              />
+            </div>
+            <div class="form-group">
+              <label for="confirmPassword">Confirm the new password:</label>
+              <input
+                class="form-control"
+                type="password"
+                name="confirmPassword"
+                id="confirmPassword"
+                placeholder="repeat the password"
+              />
+            </div>
+            <input
+              class="btn btn-block btn-warning"
+              type="submit"
+              value="Update"
+            />
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="/javascripts/editProfile.js"></script>
+<% include partials/footer %>

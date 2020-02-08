@@ -9,6 +9,14 @@
         <div class="caption">
           <div id="data">
             <h2><%= user.username %>'s profile</h2>
+            <% if(currentUser && user._id.equals(currentUser._id)){ %>
+            <a
+              href="/users/<%= currentUser.username %>/edit"
+              class="btn btn-xs btn-warning"
+              id="edit-profile-link"
+              >Edit Profile!</a
+            >
+            <% } %>
             <p><%= user.email %></p>
           </div>
           <div id="controllers">

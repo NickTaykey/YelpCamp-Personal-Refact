@@ -1,3 +1,5 @@
+/* GET PROFILE STYLES */
+
 .row {
   display: flex;
   justify-content: center;
@@ -11,6 +13,15 @@
 #data {
   text-align: center;
   margin-bottom: 40px;
+}
+
+h2 {
+  display: inline-block;
+}
+
+#edit-profile-link {
+  display: inline-block;
+  margin: 0 0 9px 3px;
 }
 
 #campgrounds-btn,
