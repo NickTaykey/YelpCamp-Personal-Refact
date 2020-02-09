@@ -10,6 +10,16 @@
   justify-content: center;
 }
 
+#img-container {
+  display: flex;
+  justify-content: center;
+}
+
+img {
+  width: 200px;
+  border-radius: 30px;
+}
+
 #data {
   text-align: center;
   margin-bottom: 40px;

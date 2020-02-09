@@ -1,6 +1,10 @@
 // PACAKGES
 const express = require("express");
 const Router = express.Router();
+const multer = require("multer");
+const { storage } = require("../cloudinary");
+// multer config
+const upload = multer({ storage });
 
 // MIDDLEWARES
 const { asyncErrorHandler } = require("../middleware");
@@ -32,7 +36,7 @@ Router.get("/", asyncErrorHandler(landing));
 Router.get("/register", registerGet);
 
 // REGISTER POST
-Router.post("/register", registerPost);
+Router.post("/register", upload.single("image"), registerPost);
 
 // LOGIN GET
 Router.get("/login", loginGet);
@@ -63,6 +67,7 @@ Router.put(
   "/users/:username",
   isLoggedIn,
   asyncErrorHandler(checkUserIdentify),
+  upload.single("image"),
   asyncErrorHandler(checkUserPassword),
   asyncErrorHandler(setNewPassword),
   asyncErrorHandler(profileUpdate)

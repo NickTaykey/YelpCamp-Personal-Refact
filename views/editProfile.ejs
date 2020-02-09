@@ -24,6 +24,7 @@
           <form
             action="/users/<%= currentUser.username %>?_method=PUT"
             method="post"
+            enctype="multipart/form-data"
           >
             <div class="form-group">
               <label for="username">Username: </label>

@@ -2,6 +2,7 @@
 const Campground = require("../models/campground");
 const Comment = require("../models/comment");
 const User = require("../models/user");
+const { cloudinary } = require("../cloudinary");
 
 // campground fields
 const formFields = ["name", "price", "description", "location"];
@@ -56,6 +57,7 @@ const middlewareOBJ = {
       // utente autorizzato
       return next();
     }
+    await module.exports.deleteImage(req);
     // utente non autorizzato, errore
     req.session.error = "Wrong password!";
     res.redirect("back");
@@ -80,6 +82,7 @@ const middlewareOBJ = {
       errMsg = "Missing password confirmation";
     }
     if (errMsg) {
+      await module.exports.deleteImage(req);
       req.session.error = errMsg;
       return res.redirect("back");
     }
@@ -136,6 +139,10 @@ const middlewareOBJ = {
     if (campground) return next();
     req.session.error = "campground not found";
     res.redirect("/campgrounds");
+  },
+  // REGISTER POST, PROFILE PUT in caso di errore elimina l'immagine uploadata
+  async deleteImage(req) {
+    if (req.file) await cloudinary.v2.uploader.destroy(req.file.public_id);
   }
 };
 module.exports = middlewareOBJ;

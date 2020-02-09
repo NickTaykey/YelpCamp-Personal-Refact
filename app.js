@@ -64,11 +64,11 @@ app.use((req, res, next) => {
   delete req.session.error;
   delete req.session.success;
   /* mantiene questo utente loggato di default */
-  req.user = {
+  /* req.user = {
     _id: "5e3f0a5c8cf15804da387b30",
     username: "nick3"
   };
-
+  */
   res.locals.currentUser = req.user;
   next();
 });

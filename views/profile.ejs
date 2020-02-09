@@ -7,6 +7,12 @@
     <div class="col-xs-10 col-lg-10">
       <div class="thumbnail">
         <div class="caption">
+          <div id="img-container">
+            <img
+              src="<%= user.image.secure_url %>"
+              alt="<%= user.username %>'s profile image"
+            />
+          </div>
           <div id="data">
             <h2><%= user.username %>'s profile</h2>
             <% if(currentUser && user._id.equals(currentUser._id)){ %>

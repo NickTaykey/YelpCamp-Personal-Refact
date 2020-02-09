@@ -1,10 +1,14 @@
 // PACKAGES
 const passport = require("passport");
 const util = require("util");
+const { cloudinary } = require("../cloudinary");
 // MODELS
 const User = require("../models/user");
 const Comment = require("../models/comment");
 const Campground = require("../models/campground");
+// MIDLEWARES
+const { deleteImage } = require("../middleware/modelsMiddleware");
+
 module.exports = {
   landing: async (req, res, next) => {
     let campgrounds = await Campground.find();
@@ -21,6 +25,12 @@ module.exports = {
       username: req.body.username,
       email: req.body.email
     });
+    if (req.file) {
+      newUser.image = {
+        secure_url: req.file.secure_url,
+        public_id: req.file.public_id
+      };
+    }
     try {
       let user = await User.register(newUser, req.body.password);
       passport.authenticate("local")(req, res, () => {
@@ -30,6 +40,7 @@ module.exports = {
         res.redirect(url);
       });
     } catch (err) {
+      await deleteImage(req);
       let error = err.message;
       if (
         error.includes("E11000 duplicate key error collection") &&
@@ -98,6 +109,7 @@ module.exports = {
       if (email && email.length) user.email = email;
       await user.save();
     } catch (e) {
+      await deleteImage(req);
       let msg;
       if (
         e.message.includes(
@@ -111,7 +123,16 @@ module.exports = {
       req.session.error = msg;
       return res.redirect(`/users/${req.user.username}/edit`);
     }
-
+    if (req.file) {
+      // eliminiamo l'immagine attuale
+      if (user.image.public_id)
+        await cloudinary.v2.uploader.destroy(user.image.public_id);
+      // settiamo nel DB quella nuova
+      user.image = {
+        secure_url: req.file.secure_url,
+        public_id: req.file.public_id
+      };
+    }
     // ri autentichiamo l'utente (nel caso dello username aggiornato la sessione attuale nn è più valida)
     const login = util.promisify(req.login.bind(req));
     await login(user);
