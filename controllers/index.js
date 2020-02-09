@@ -103,7 +103,7 @@ module.exports = {
   },
   async profileUpdate(req, res, next) {
     const { user } = res.locals;
-    const { username, email } = req.body;
+    const { username, email, removeImage } = req.body;
     try {
       if (username && username.length) user.username = username;
       if (email && email.length) user.email = email;
@@ -132,7 +132,10 @@ module.exports = {
         secure_url: req.file.secure_url,
         public_id: req.file.public_id
       };
+    } else if (removeImage) {
+      user.image = { secure_url: "/images/user-ico.jpeg" };
     }
+    await user.save();
     // ri autentichiamo l'utente (nel caso dello username aggiornato la sessione attuale nn è più valida)
     const login = util.promisify(req.login.bind(req));
     await login(user);

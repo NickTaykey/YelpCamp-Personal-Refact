@@ -5,7 +5,15 @@ const newPassword = document.getElementById("newPassword");
 const confirmPassword = document.getElementById("confirmPassword");
 const pwdStateLabel = document.getElementById("pwdStateLabel");
 const submitBtn = document.querySelector("input[type='submit']");
-const error = document.getElementById("error");
+const imageInput = document.querySelector("input[type='file']");
+const removeImageCheckBox = document.getElementById("remove-image");
+
+removeImageCheckBox.addEventListener("change", function(e) {
+  if (this.checked) {
+    imageInput.value = "";
+    imageInput.setAttribute("disabled", true);
+  } else imageInput.removeAttribute("disabled");
+});
 
 function setPwdStateMsg(msg, stateToAdd, stateToRemove) {
   pwdStateLabel.textContent = msg;
