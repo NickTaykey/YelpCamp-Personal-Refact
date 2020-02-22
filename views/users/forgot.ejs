@@ -1,0 +1,26 @@
+<% include ../partials/header %>
+<link rel="stylesheet" type="text/css" href="/stylesheet/form.css" />
+<% include ../partials/close_header %>
+
+<div class="row form-row">
+  <h1 class="title">Password Reset</h1>
+  <form action="/forgot-password?_method=PUT" method="POST">
+    <div class="form-group">
+      <label for="email">Type your account email: </label>
+      <input
+        type="email"
+        name="email"
+        id="email"
+        placeholder="email"
+        class="form-control"
+        required
+        autofocus
+      />
+    </div>
+    <button class="btn btn-block btn-primary auth-btn" type="submit">
+      Submit
+    </button>
+  </form>
+</div>
+
+<% include ../partials/footer %>
