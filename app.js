@@ -61,6 +61,7 @@ passport.deserializeUser(User.deserializeUser());
 app.use((req, res, next) => {
   res.locals.error = req.session.error;
   res.locals.success = req.session.success;
+  res.locals.previousLocation = req.headers.referer;
   delete req.session.error;
   delete req.session.success;
   /* mantiene questo utente loggato di default */

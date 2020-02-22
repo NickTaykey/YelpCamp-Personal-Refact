@@ -143,6 +143,22 @@ const middlewareOBJ = {
   // REGISTER POST, PROFILE PUT in caso di errore elimina l'immagine uploadata
   async deleteImage(req) {
     if (req.file) await cloudinary.v2.uploader.destroy(req.file.public_id);
+  },
+  // validate password reset token
+  async validatePasswordResetToken(req, res, next) {
+    const { token } = req.params;
+    // check if there are users with that token (not expired)
+    const user = await User.findOne({ passwordResetToken: token })
+      .where("passwordResetExpires")
+      .gt(Date.now())
+      .exec();
+    // if there is not the token, raise an error
+    if (!user) {
+      req.session.error = "Token invalid or expired";
+      return res.redirect("/forgot-password");
+    }
+    res.locals.user = user;
+    next();
   }
 };
 module.exports = middlewareOBJ;

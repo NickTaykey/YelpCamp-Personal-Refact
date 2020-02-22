@@ -22,6 +22,11 @@
         <li><a href="/campgrounds">Home</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
+        <li>
+          <a href="<%= previousLocation %>">
+            <i class="fas fa-arrow-left" style="margin-right: 3px;"></i> Back
+          </a>
+        </li>
         <!-- SE L'UTENTE NON E' LOGGATO VOGLIAMO MOSTRARE IL LINK LOGIN E SIGNUP -->
         <% if(!currentUser){ %>
         <li><a href="/login">Login</a></li>

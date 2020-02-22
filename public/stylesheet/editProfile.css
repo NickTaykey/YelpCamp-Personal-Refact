@@ -7,11 +7,3 @@ header {
 h2 {
   display: block;
 }
-
-/* PASSWORD MATCHING STATE LABEL COLORS */
-.success {
-  color: green;
-}
-.error {
-  color: red;
-}

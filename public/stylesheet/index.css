@@ -15,3 +15,11 @@ div.row.text-center {
   -moz-border-radius: 12px;
   border-radius: 12px;
 }
+
+.success {
+  color: green;
+}
+
+.error {
+  color: red;
+}

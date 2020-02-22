@@ -6,7 +6,9 @@ const userSchema = new mongoose.Schema({
   image: {
     secure_url: { type: String, default: "/images/user-ico.jpeg" },
     public_id: String
-  }
+  },
+  passwordResetToken: String,
+  passwordResetExpires: Date
 });
 
 userSchema.plugin(passportLocalMongoose);

@@ -13,7 +13,8 @@ const {
   checkUserIdentify,
   checkUserPassword,
   setNewPassword,
-  isLoggedIn
+  isLoggedIn,
+  validatePasswordResetToken
 } = require("../middleware/modelsMiddleware");
 
 // CONTROLLERS
@@ -26,7 +27,11 @@ const {
   logout,
   profileGet,
   profileEdit,
-  profileUpdate
+  profileUpdate,
+  forgotGet,
+  forgotPut,
+  resetGet,
+  resetPut
 } = require("../controllers");
 
 // LANDING
@@ -71,6 +76,25 @@ Router.put(
   asyncErrorHandler(checkUserPassword),
   asyncErrorHandler(setNewPassword),
   asyncErrorHandler(profileUpdate)
+);
+
+// PASSWORD RESET ROUTES
+
+// GET render forgot password form
+Router.get("/forgot-password", forgotGet);
+// PUT process data from the former form, send an email with a token
+Router.put("/forgot-password", asyncErrorHandler(forgotPut));
+// GET validate token to render reset form
+Router.get(
+  "/reset-password/:token",
+  asyncErrorHandler(validatePasswordResetToken),
+  asyncErrorHandler(resetGet)
+);
+// PUT process reset form data and change the password
+Router.put(
+  "/reset-password/:token",
+  asyncErrorHandler(validatePasswordResetToken),
+  asyncErrorHandler(resetPut)
 );
 
 module.exports = Router;

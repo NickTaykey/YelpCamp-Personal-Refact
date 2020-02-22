@@ -1,4 +1,7 @@
 /* EDIT FORM CSS */
+form {
+  margin: 30px auto;
+}
 
 .form-row {
   width: 30%;
@@ -28,4 +31,5 @@ input[type="checkbox"] {
 
 .auth-link {
   margin-bottom: 15px;
+  text-align: center;
 }

@@ -2,6 +2,9 @@
 const passport = require("passport");
 const util = require("util");
 const { cloudinary } = require("../cloudinary");
+const crypto = require("crypto");
+const sgMail = require("@sendgrid/mail");
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 // MODELS
 const User = require("../models/user");
 const Comment = require("../models/comment");
@@ -141,5 +144,103 @@ module.exports = {
     await login(user);
     req.session.success = "profile successfully updated!";
     res.redirect(`/users/${user.username}/edit`);
+  },
+  // render forgot.ejs form
+  forgotGet(req, res, next) {
+    res.render("users/forgot");
+  },
+  // PUT process data from the former form, send an email with a token
+  async forgotPut(req, res, next) {
+    const { email } = req.body;
+    // check if the user exists
+    const user = await User.findOne({ email });
+    // if it does not exist raise an err
+    if (!user) {
+      req.session.error = `There are no users registered with "${email}"`;
+      return res.redirect("/forgot-password");
+    }
+    // if yes gen and set token
+    user.passwordResetToken = crypto.randomBytes(20).toString("hex");
+    user.passwordResetExpires = Date.now() + 3600000;
+    await user.save();
+    // send email with the token
+    const msg = {
+      from: "The YelpCamp Team <yelpcamp@yelpcamp.com>",
+      to: email,
+      subject: "Password Reset request",
+      html: `
+      <h2>Hi, ${user.username}!</h2>
+      <p>
+      You or somebody else has requested a password reset for your account.
+      <br>
+      if you did that 
+      <a href="http://${req.headers.host}/reset-password/${user.passwordResetToken}" target="_blank" rel="noopener noreferrer">
+          this is the link to fullfill the process
+      </a>
+      <br>
+      if you did not request this <strong>Do not open the link</strong> just ignore this mail.
+      <br>
+      Cheers!
+      <br>
+      <br>
+      <em>The Yelpcamp development team</em>
+      </p>
+      `.replace(/      /g, "")
+    };
+    await sgMail.send(msg);
+    req.session.success =
+      "An email has been sent to you with further instructions";
+    res.redirect("/forgot-password");
+  },
+  // GET validate token to render reset form
+  async resetGet(req, res, next) {
+    const { token } = req.params;
+    res.render("users/reset", { token });
+  },
+  // PUT process reset form data and change the password
+  async resetPut(req, res, next) {
+    const { user } = res.locals;
+    const { newPassword, confirmPassword } = req.body;
+    if (newPassword.length && confirmPassword)
+      if (newPassword === confirmPassword) {
+        // check if the passwords match
+        // reset the password
+        await user.setPassword(newPassword);
+        user.passwordResetToken = null;
+        user.passwordResetExpires = null;
+        await user.save();
+        // log the user in back
+        const login = util.promisify(req.login.bind(req));
+        await login(user);
+        // send a success password reset mail
+        const msg = {
+          from: "The YelpCamp Team <yelpcamp@yelpcamp.com>",
+          to: user.email,
+          subject: "Successfully reseted password!",
+          html: `<h2>Hi, ${user.username}</h2>
+        <p>
+        <strong>The password of your account has been successfully reseted!</strong>
+        <br>
+        <strong>If you do not know what this email is about</strong> reply us at once.
+        <br>
+        Cheers!
+        <br>
+        <br>
+        <em>The Yelpcamp development team</em>
+        </p>`.replace(/        /g, "")
+        };
+        await sgMail.send(msg);
+        req.session.success = "Your password has been successfully reseted";
+        res.redirect("/campgrounds");
+      } else {
+        // passwords matching error
+        req.session.error = "Passwords do not match";
+        return res.redirect(`/reset-password/${user.passwordResetToken}`);
+      }
+    else {
+      // missing passwords error
+      req.session.error = "missing passwords";
+      return res.redirect(`/reset-password/${user.passwordResetToken}`);
+    }
   }
 };

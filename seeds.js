@@ -4,11 +4,12 @@ const Campground = require("./models/campground");
 const Comment = require("./models/comment");
 const data = require("./campgroundGeoData");
 const cities = require("./cities");
-const author = "5e3f0a5c8cf15804da387b30";
+const User = require("./models/user");
 
 const campgroundNumber = 40;
 const commentsNumber = 20;
 module.exports = async () => {
+  const { _id } = await User.findById("5e515d73ffce56090ed37b86");
   await Campground.deleteMany({});
   await Comment.deleteMany({});
   // create campgroundNumber campgrounds
@@ -23,7 +24,7 @@ module.exports = async () => {
       name,
       description,
       price: Math.round(Math.random() * 100),
-      author,
+      author: _id,
       images: [
         {
           url:
@@ -39,7 +40,6 @@ module.exports = async () => {
         }
       ]
     };
-
     campgroundObj.location = state;
     campgroundObj.place_name = city;
 
@@ -55,7 +55,7 @@ module.exports = async () => {
         text: faker.lorem.words(5),
         rating: Math.round(Math.random() * 5) + 1,
         campgroundName: campground.name,
-        author
+        author: _id
       };
       campground.comments.push(await Comment.create(comment));
     }
