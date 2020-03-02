@@ -14,7 +14,10 @@
     <li class="<%= p==campgrounds.page ? 'active' : '' %>">
       <a href="/campgrounds?page=<%= p %>"><%= p %></a>
     </li>
-    <% } %> <% if(campgrounds.page!==campgrounds.pages){ %>
+    <% if((p%20)===0){ %>
+  </ul>
+  <ul class="pagination">
+    <% } %> <% } %> <% if(campgrounds.page!==campgrounds.pages){ %>
     <li>
       <a href="/campgrounds?page=<%= campgrounds.page+1 %>" aria-label="Next">
         <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>
