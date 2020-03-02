@@ -9,7 +9,7 @@ const User = require("./models/user");
 const campgroundNumber = 40;
 const commentsNumber = 20;
 module.exports = async () => {
-  const { _id } = await User.findById("5e515d73ffce56090ed37b86");
+  const { _id } = await User.findById("5e5d62e2efe05c03b8e14c4e");
   await Campground.deleteMany({});
   await Comment.deleteMany({});
   // create campgroundNumber campgrounds

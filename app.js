@@ -40,7 +40,7 @@ app.use(cookieParser());
 app.use(favicon(path.join(__dirname, "public", "favicon.ico")));
 
 // DB CONNECTION
-mongoose.connect("mongodb://localhost:27017/YelpCamp_user_profile", {
+mongoose.connect("mongodb://localhost:27017/YelpCamp_search_and_filtering", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useCreateIndex: true,
@@ -65,11 +65,11 @@ app.use((req, res, next) => {
   delete req.session.error;
   delete req.session.success;
   /* mantiene questo utente loggato di default */
-  /* req.user = {
-    _id: "5e3f0a5c8cf15804da387b30",
-    username: "nick3"
+  req.user = {
+    _id: "5e5d62e2efe05c03b8e14c4e",
+    username: "nick"
   };
-  */
+
   res.locals.currentUser = req.user;
   next();
 });
