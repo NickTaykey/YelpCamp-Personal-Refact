@@ -6,12 +6,20 @@
     <div class="container">
       <H1>Wellcome To YelpCamp</H1>
       <h3>See our campgrounds from all over the world on this map</h3>
-      <div id="map"></div>
       <p>
         <a href="/campgrounds/new" class="btn btn-primary btn-lg">NEW CAMPGROUND</a>
       </p>
     </div>
   </header>
+  <div class="row" id="map-box">
+    <div class="col-lg-3">
+      <% include ../partials/searchAndFilter %>
+    </div>
+    <div class="col-lg-9">
+      <div id="map"></div>
+    </div>
+  </div>
+
   <div class="row text-center">
     <div class="col-md-12 col-lg-12">
       <h3>

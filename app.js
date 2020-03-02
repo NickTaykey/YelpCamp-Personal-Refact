@@ -13,7 +13,7 @@ const engine = require("ejs-mate");
 const methodOverride = require("method-override");
 const favicon = require("serve-favicon");
 const path = require("path");
-require("./seeds")();
+// require("./seeds")();
 
 // MODELS
 const User = require("./models/user");

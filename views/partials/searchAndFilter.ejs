@@ -1,0 +1,73 @@
+<form action="/campgrounds" method="get">
+  <fieldset>
+    <legend>Search</legend>
+    <label for="search">search using a keyword:</label>
+    <input
+      class="form-control"
+      type="text"
+      placeholder="Search a campground"
+      name="search"
+      id="search"
+    />
+  </fieldset>
+  <fieldset>
+    <legend>Rating</legend>
+    <input type="checkbox" name="avgRating[]" id="0-rating" value="0" />
+    <label for="0-rating">0 stars</label>
+    <input type="checkbox" name="avgRating[]" id="1-rating" value="1" />
+    <label for="1-rating">1 star</label>
+    <input type="checkbox" name="avgRating[]" id="2-rating" value="2" />
+    <label for="2-rating">2 stars</label>
+    <input type="checkbox" name="avgRating[]" id="3-rating" value="3" />
+    <label for="3-rating">3 stars</label>
+    <input type="checkbox" name="avgRating[]" id="4-rating" value="4" />
+    <label for="4-rating">4 stars</label>
+    <input type="checkbox" name="avgRating[]" id="5-rating" value="5" />
+    <label for="5-rating">5 stars</label>
+  </fieldset>
+  <fieldset>
+    <legend>Location</legend>
+    <label for="location">Location: </label>
+    <input
+      type="text"
+      class="form-control"
+      placeholder="base location"
+      name="location"
+      id="location"
+    />
+    <br />
+    <input type="radio" name="distance" value="10" id="10km" />
+    <label for="10km">10km</label>
+    <input type="radio" name="distance" value="50" id="50km" />
+    <label for="50km">50km</label>
+    <input type="radio" name="distance" value="100" id="100km" />
+    <label for="100km">100km</label>
+  </fieldset>
+  <fieldset>
+    <legend>Price</legend>
+    <label for="min">Min:</label>
+    <input
+      type="number"
+      class="form-control"
+      name="price[min]"
+      id="min"
+      step="1"
+      placeholder="Min Price"
+    />
+    <br />
+    <label for="max">Max</label>
+    <input
+      type="number"
+      class="form-control"
+      name="price[max]"
+      id="max"
+      step="1"
+      placeholder="Max Price"
+    />
+  </fieldset>
+  <hr />
+  <fieldset>
+    <input class="btn btn-danger" type="reset" value="reset form" />
+    <input class="btn btn-primary" type="submit" value="Search" />
+  </fieldset>
+</form>

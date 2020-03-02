@@ -45,6 +45,7 @@ module.exports = async () => {
     };
     campgroundObj.location = state;
     campgroundObj.place_name = city;
+    campgroundObj.avgRating = Math.round(Math.random() * 5) + 1;
 
     campgroundObj.geometry = {
       type: "Point",

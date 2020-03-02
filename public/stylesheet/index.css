@@ -8,10 +8,14 @@ div.row.text-center {
   justify-content: center;
 }
 
+#map-box {
+  margin: 40px 0 40px 0;
+}
+
 #map {
   margin: 25px 0 25px 0;
   width: 100%;
-  height: 450px;
+  height: 620px;
   -moz-border-radius: 12px;
   border-radius: 12px;
 }
