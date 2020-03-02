@@ -1,6 +1,17 @@
 mapboxgl.accessToken =
   "pk.eyJ1Ijoibmlja3RheSIsImEiOiJjazJ1cTdkNzUwOXZnM2hwYTV2Z3ppa3J3In0.RlGvSEVuNTV8qf0t1zfviw";
 
+let sumX = 0;
+campgrounds.features.forEach(c => {
+  sumX += c.geometry.coordinates[0];
+});
+let sumY = 0;
+campgrounds.features.forEach(c => {
+  sumY += c.geometry.coordinates[1];
+});
+let centerX = sumX !== 0 ? sumX / campgrounds.features.length : 0;
+let centerY = sumY !== 0 ? sumY / campgrounds.features.length : 0;
+
 // set basic map
 var map = new mapboxgl.Map({
   container: "map",
@@ -8,7 +19,7 @@ var map = new mapboxgl.Map({
     ? "mapbox://styles/nicktay/ck3amm1ti0idd1co986dq099f"
     : // "mapbox://styles/mapbox/streets-v11",
       "mapbox://styles/nicktay/ck52xo27i147a1cmihrlmbza8",
-  center: [-94.955795, 40.764287],
+  center: [centerX, centerY],
   zoom: 3
 });
 

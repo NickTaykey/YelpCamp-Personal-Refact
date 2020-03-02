@@ -3,10 +3,10 @@ const faker = require("faker");
 const Campground = require("./models/campground");
 const Comment = require("./models/comment");
 const data = require("./campgroundGeoData");
-const cities = require("./cities");
+const cities = require("cities.json");
 const User = require("./models/user");
 
-const campgroundNumber = 40;
+const campgroundNumber = 500;
 const commentsNumber = 20;
 module.exports = async () => {
   const { _id } = await User.findById("5e5d62e2efe05c03b8e14c4e");
@@ -17,9 +17,12 @@ module.exports = async () => {
     let num = Math.round(Math.random() * 133);
     const { name, description } = data[num];
     // find random city
-    num = Math.round(Math.random() * 998);
-    const { city, longitude, latitude, state } = cities[num];
-    // name, description, location, placeName,
+    num = Math.round(Math.random() * cities.length - 1);
+    const place = cities[num];
+    const city = place.name;
+    const state = place.country;
+    const latitude = place.lat;
+    const longitude = place.lng;
     const campgroundObj = {
       name,
       description,

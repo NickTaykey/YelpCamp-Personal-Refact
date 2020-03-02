@@ -12,6 +12,7 @@
     "@mapbox/mapbox-sdk": "^0.9.0",
     "@sendgrid/mail": "^6.5.3",
     "body-parser": "^1.19.0",
+    "cities.json": "^1.1.5",
     "cloudinary": "^1.19.0",
     "cookie-parser": "^1.4.4",
     "ejs": "^3.0.1",
