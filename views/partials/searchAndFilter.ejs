@@ -1,5 +1,5 @@
 <form action="/campgrounds" method="get">
-  <fieldset>
+  <fieldset class="form-group">
     <legend>Search</legend>
     <label for="search">search using a keyword:</label>
     <input
@@ -10,7 +10,7 @@
       id="search"
     />
   </fieldset>
-  <fieldset>
+  <fieldset class="form-group">
     <legend>Rating</legend>
     <input type="checkbox" name="avgRating[]" id="0-rating" value="0" />
     <label for="0-rating">0 stars</label>
@@ -25,7 +25,7 @@
     <input type="checkbox" name="avgRating[]" id="5-rating" value="5" />
     <label for="5-rating">5 stars</label>
   </fieldset>
-  <fieldset>
+  <fieldset class="form-group">
     <legend>Location</legend>
     <label for="location">Location: </label>
     <input
@@ -43,30 +43,54 @@
     <input type="radio" name="distance" value="100" id="100km" />
     <label for="100km">100km</label>
   </fieldset>
-  <fieldset>
+  <fieldset class="form-group">
     <legend>Price</legend>
-    <label for="min">Min:</label>
     <input
       type="number"
-      class="form-control"
+      class="form-control Min"
       name="price[min]"
       id="min"
       step="1"
-      placeholder="Min Price"
-    />
-    <br />
-    <label for="max">Max</label>
-    <input
+      placeholder="Min"
+    /><input
       type="number"
-      class="form-control"
+      class="form-control Max"
       name="price[max]"
       id="max"
       step="1"
-      placeholder="Max Price"
+      placeholder="Max"
     />
   </fieldset>
-  <hr />
-  <fieldset>
+  <fieldset class="form-group" id="features">
+    <legend>Features</legend>
+    <section>
+      <input type="checkbox" id="wifi" name="features[hasWifi]" />
+      <label for="wifi">Free WiFi</label>
+      <input
+        type="checkbox"
+        id="swimingPoll"
+        name="features[hasSwimmingPool]"
+      />
+      <label for="swimingPoll">Swiming Pool</label>
+    </section>
+    <section>
+      <h4>Baths</h4>
+      <select name="features[baths]" class="form-control">
+        <option value="basic">no shower</option>
+        <option value="covered">shower</option>
+        <option value="withParkers">shower and bath tub</option>
+      </select>
+    </section>
+    <section>
+      <h4>Car Parkings</h4>
+      <select name="features[carParking]" class="form-control">
+        <option value="basic">basic parking</option>
+        <option value="covered">covered parking</option>
+        <option value="withParkers">with parkers</option>
+      </select>
+    </section>
+  </fieldset>
+  <fieldset class="form-group">
     <input class="btn btn-danger" type="reset" value="reset form" />
     <input class="btn btn-primary" type="submit" value="Search" />
   </fieldset>

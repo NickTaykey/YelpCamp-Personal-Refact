@@ -15,9 +15,14 @@ div.row.text-center {
 #map {
   margin: 25px 0 25px 0;
   width: 100%;
-  height: 620px;
+  height: 765px;
   -moz-border-radius: 12px;
   border-radius: 12px;
+}
+
+h3 {
+  margin-top: 0;
+  margin-bottom: 40px;
 }
 
 .success {

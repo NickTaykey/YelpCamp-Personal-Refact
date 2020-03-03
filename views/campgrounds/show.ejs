@@ -11,11 +11,11 @@
         <a class="list-group-item">Photos</a>
         <a class="list-group-item">Location</a>
         <a class="list-group-item">Reviews</a>
+        <a class="list-group-item">Features</a>
       </div>
     </div>
     <div class="col-md-9">
       <div class="thumbnail">
-
         <div class="images">
           <% if(campground.images.length>1){ %>
           <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
@@ -105,6 +105,21 @@
           </div>
         </div>
         <% }); %>
+      </div>
+      <div class="features">
+        <div class="alert alert-<%= campground.features.freeWiFi ? 'success' : 'danger' %>">Free Wi-Fi</div>
+        <div class="alert alert-<%= campground.features.carParkings==='basic' ? 'warning' : 
+                                    campground.features.carParkings==='covered' ? 'info' :
+                                    campground.features.carParkings==='with parkers' ? 'success' : '' %>">
+                                    Car Parkings: <%= campground.features.carParkings %></div>
+        <div class="alert alert-<%= campground.features.hasSwimingPool ? 'success' : 'danger' %>">
+          There is <%= !campground.features.hasSwimingPool ? 'not' : '' %> a Swiming pool
+        </div>
+        <div class="alert alert-<%= campground.features.baths==='no shower' ? 'warning' : 
+        campground.features.baths==='shower' ? 'info' :
+        campground.features.baths==='shower and bath tub' ? 'success' : '' %>">
+        Baths: <%= campground.features.baths %>
+        </div>
       </div>
     </div>
   </div>

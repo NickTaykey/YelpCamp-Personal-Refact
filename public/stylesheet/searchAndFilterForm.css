@@ -1,0 +1,13 @@
+input[type="checkbox"] + label {
+  margin-right: 10px;
+}
+
+.Min {
+  margin-right: 10px;
+}
+
+.Max,
+.Min {
+  display: inline-block;
+  width: 45%;
+}

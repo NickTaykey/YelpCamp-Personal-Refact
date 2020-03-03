@@ -1,6 +1,7 @@
 .images,
 .geo,
-.reviews {
+.reviews,
+.features {
   display: none;
 }
 

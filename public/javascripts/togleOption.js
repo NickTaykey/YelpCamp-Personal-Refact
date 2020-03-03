@@ -6,7 +6,7 @@
   DIMENSIONI CORRETTE CHE ABBIAMO SPECIFICATO DAL CSS
 */
 let options = document.querySelectorAll(".list-group-item"),
-  elems = [".geo", ".reviews", ".info", ".images"],
+  elems = [".geo", ".reviews", ".info", ".images", ".features"],
   elemToShow,
   getElementsToHide = el => {
     let arr = [...elems];
@@ -25,10 +25,12 @@ for (const opt of options) {
       else if (text === "Location") elemToShow = ".geo";
       else if (text === "Photos") elemToShow = ".images";
       else if (text === "Reviews") elemToShow = ".reviews";
+      else if (text === "Features") elemToShow = ".features";
       for (const el of document.querySelectorAll(elemToShow)) {
         el.style.display = "block";
         let thumbnail = document.querySelector(".thumbnail");
-        if (elemToShow === ".reviews") thumbnail.style.display = "none";
+        if (elemToShow === ".reviews" || elemToShow === ".features")
+          thumbnail.style.display = "none";
         else {
           thumbnail.style.display = "block";
           if (elemToShow === ".geo") map.resize();

@@ -8,6 +8,12 @@ const campgroundSchema = new mongoose.Schema({
   description: String,
   location: String,
   place_name: String,
+  features: {
+    baths: String,
+    freeWiFi: { type: Boolean, default: false },
+    carParkings: String,
+    hasSwimingPool: { type: Boolean, default: false }
+  },
   geometry: {
     coordinates: { type: [Number], require: true },
     type: { type: String, enum: ["Point"] }

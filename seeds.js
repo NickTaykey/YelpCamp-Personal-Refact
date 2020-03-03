@@ -8,6 +8,8 @@ const User = require("./models/user");
 
 const campgroundNumber = 500;
 const commentsNumber = 20;
+const parkingTypes = ["basic", "covered", "with parkers"];
+const bathTypes = ["no shower", "shower", "shower and bath tub"];
 module.exports = async () => {
   const { _id } = await User.findById("5e5d62e2efe05c03b8e14c4e");
   await Campground.deleteMany({});
@@ -23,9 +25,16 @@ module.exports = async () => {
     const state = place.country;
     const latitude = place.lat;
     const longitude = place.lng;
+    num = Math.round(Math.random() * 2);
     const campgroundObj = {
       name,
       description,
+      features: {
+        baths: bathTypes[num],
+        freeWiFi: Math.random() >= 0.1,
+        carParkings: parkingTypes[num],
+        hasSwimingPool: Math.random() >= 0.5
+      },
       price: Math.round(Math.random() * 100),
       author: _id,
       images: [
