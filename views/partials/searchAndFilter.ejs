@@ -1,4 +1,4 @@
-<form action="/campgrounds" method="get">
+<form action="/campgrounds" method="GET">
   <fieldset class="form-group">
     <legend>Search</legend>
     <label for="search">search using a keyword:</label>
@@ -8,21 +8,28 @@
       placeholder="Search a campground"
       name="search"
       id="search"
+      value="<%= query.search ? query.search : '' %>"
     />
   </fieldset>
   <fieldset class="form-group">
     <legend>Rating</legend>
-    <input type="checkbox" name="avgRating[]" id="0-rating" value="0" />
+    <input type="checkbox" name="avgRating[]" id="0-rating" value="0" <%=
+    query.avgRating && query.avgRating.includes('0') ? 'checked' : '' %> />
     <label for="0-rating">0 stars</label>
-    <input type="checkbox" name="avgRating[]" id="1-rating" value="1" />
+    <input type="checkbox" name="avgRating[]" id="1-rating" value="1" <%=
+    query.avgRating && query.avgRating.includes('1') ? 'checked' : '' %> />
     <label for="1-rating">1 star</label>
-    <input type="checkbox" name="avgRating[]" id="2-rating" value="2" />
+    <input type="checkbox" name="avgRating[]" id="2-rating" value="2" <%=
+    query.avgRating && query.avgRating.includes('2') ? 'checked' : '' %> />
     <label for="2-rating">2 stars</label>
-    <input type="checkbox" name="avgRating[]" id="3-rating" value="3" />
+    <input type="checkbox" name="avgRating[]" id="3-rating" value="3" <%=
+    query.avgRating && query.avgRating.includes('3') ? 'checked' : '' %> />
     <label for="3-rating">3 stars</label>
-    <input type="checkbox" name="avgRating[]" id="4-rating" value="4" />
+    <input type="checkbox" name="avgRating[]" id="4-rating" value="4" <%=
+    query.avgRating && query.avgRating.includes('4') ? 'checked' : '' %> />
     <label for="4-rating">4 stars</label>
-    <input type="checkbox" name="avgRating[]" id="5-rating" value="5" />
+    <input type="checkbox" name="avgRating[]" id="5-rating" value="5" <%=
+    query.avgRating && query.avgRating.includes('5') ? 'checked' : '' %>/>
     <label for="5-rating">5 stars</label>
   </fieldset>
   <fieldset class="form-group">
@@ -34,14 +41,34 @@
       placeholder="base location"
       name="location"
       id="location"
+      value="<%= query.location ? query.location : '' %>"
     />
     <br />
-    <input type="radio" name="distance" value="10" id="10km" />
+    <input type="radio" name="distanceObj[distance]" value="10" id="10km" <%=
+    query.distanceObj && !query.distanceObj.customDistance &&
+    (query.distanceObj.distance==="10" || (!query.distanceObj.distance &&
+    query.location)) ? "checked" : "" %> />
     <label for="10km">10km</label>
-    <input type="radio" name="distance" value="50" id="50km" />
+    <input type="radio" name="distanceObj[distance]" value="50" id="50km" <%=
+    query.distanceObj && !query.distanceObj.customDistance &&
+    query.distanceObj.distance==="50" ? "checked" : "" %> />
     <label for="50km">50km</label>
-    <input type="radio" name="distance" value="100" id="100km" />
+    <input type="radio" name="distanceObj[distance]" value="100" id="100km" <%=
+    query.distanceObj && !query.distanceObj.customDistance &&
+    query.distanceObj.distance==="100" ? "checked" : "" %> />
     <label for="100km">100km</label>
+    <div id="customDistanceContainer">
+      <label for="customDistance">Set a custom distance in km: </label
+      ><input
+        class="form-control"
+        type="number"
+        name="distanceObj[customDistance]"
+        id="customDistance"
+        step="1"
+        placeholder="Distance"
+        value="<%= query.distanceObj && query.distanceObj.customDistance ? query.distanceObj.customDistance : '' %>"
+      />
+    </div>
   </fieldset>
   <fieldset class="form-group">
     <legend>Price</legend>
@@ -51,26 +78,27 @@
       name="price[min]"
       id="min"
       step="1"
-      placeholder="Min"
+      placeholder="Min USD"
+      value="<%= query.price && query.price.min ? query.price.min : '' %>"
     /><input
       type="number"
       class="form-control Max"
       name="price[max]"
       id="max"
       step="1"
-      placeholder="Max"
+      placeholder="Max USD"
+      value="<%= query.price && query.price.max ? query.price.max : '' %>"
     />
   </fieldset>
   <fieldset class="form-group" id="features">
     <legend>Features</legend>
     <section>
-      <input type="checkbox" id="wifi" name="features[hasWifi]" />
+      <input type="checkbox" id="wifi" name="features[freeWiFi]" value="true"
+      <%= query.features && query.features.freeWiFi ? 'checked' : '' %> />
       <label for="wifi">Free WiFi</label>
-      <input
-        type="checkbox"
-        id="swimingPoll"
-        name="features[hasSwimmingPool]"
-      />
+      <input type="checkbox" id="swimingPoll" name="features[hasSwimmingPool]"
+      value="true" <%= query.features && query.features.hasSwimmingPool ?
+      'checked' : '' %> />
       <label for="swimingPoll">Swiming Pool</label>
     </section>
     <section>

@@ -4,7 +4,7 @@ const mongoosePaginate = require("mongoose-paginate");
 const campgroundSchema = new mongoose.Schema({
   name: String,
   images: [{ url: String, public_id: String }],
-  price: String,
+  price: Number,
   description: String,
   location: String,
   place_name: String,
@@ -48,5 +48,11 @@ campgroundSchema.methods.calcAvgRating = async function() {
   }
   return floorRating;
 };
+
+/* 
+  add a 2dsphere to the geometry field of the campgroundSchema, in order to select the posts using the 
+  distance from a referement point
+*/
+campgroundSchema.index({ geometry: "2dsphere" });
 
 module.exports = mongoose.model("Campground", campgroundSchema);

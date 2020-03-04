@@ -9,12 +9,25 @@ const Campground = require("../models/campground"),
 
 module.exports = {
   indexCampground: async (req, res, next) => {
-    let campgrounds = await Campground.paginate(
-      {},
-      { limit: 8, page: req.query.page || 1, sort: "-_id" }
-    );
+    // use the query provided by searchAndFilter middleware to retrive the campgrounds from the DB
+    const { dbQuery, query } = res.locals;
+    let campgrounds = await Campground.paginate(dbQuery, {
+      limit: 8,
+      page: req.query.page || 1,
+      sort: "-_id"
+    });
+    // set "not found" err message if there was a query and no campgrounds found
+    if (!campgrounds.docs.length && dbQuery) {
+      res.locals.error = "Campgrounds not found for this query!";
+    }
+    // set a successfull message if the query produced results
+    else if (campgrounds.docs.length && dbQuery) {
+      res.locals.success = `${campgrounds.docs.length *
+        campgrounds.pages} Campgrounds found!`;
+    }
     campgrounds.page = Number(campgrounds.page);
     campgrounds.pages = Number(campgrounds.pages);
+    delete res.locals.dbQuery; // delete the dbQuery to save space
     res.render("campgrounds", { campgrounds });
   },
   newCampground: (req, res, next) => {

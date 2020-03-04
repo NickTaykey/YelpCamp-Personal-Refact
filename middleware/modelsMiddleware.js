@@ -4,8 +4,20 @@ const Comment = require("../models/comment");
 const User = require("../models/user");
 const { cloudinary } = require("../cloudinary");
 
+// to deal with location in searchAndFiltering middleware
+const mapbox = require("@mapbox/mapbox-sdk/services/geocoding");
+let geocodeClient = mapbox({ accessToken: process.env.MAPBOX_TOKEN });
+
 // campground fields
 const formFields = ["name", "price", "description", "location"];
+
+/* 
+add a \ before any special regex character (valid in the regexps) in order to escape it
+USED IN searchAndFilterCampgrounds MIDLEWARE TO DEAL WITH USER TYPED STRINGS
+*/
+function escapeRegExp(string) {
+  return string.replace(/[.*+\-?^${}()|[\]\\]/g, "\\$&"); // $& means the whole matched string
+}
 
 const middlewareOBJ = {
   isLoggedIn: (req, res, next) => {
@@ -158,6 +170,98 @@ const middlewareOBJ = {
       return res.redirect("/forgot-password");
     }
     res.locals.user = user;
+    next();
+  },
+  // make the search and filter query if there are filters otherwise, select all the campgrounds
+  async searchAndFilterCampgrounds(req, res, next) {
+    const keys = Object.keys(req.query);
+    // the subqueries are stored here
+    const dbQueries = [];
+    // if there is something in query string we may have to build a query
+    if (keys.length) {
+      let {
+        search,
+        avgRating,
+        location,
+        distanceObj,
+        price,
+        features
+      } = req.query;
+      // if there is a keyword to search with
+      if (search) {
+        // escape the whole string and convert it to a regex
+        search = new RegExp(escapeRegExp(search), "gi");
+        // select all the posts where there is the keyword search
+        dbQueries.push({
+          $or: [
+            { name: search },
+            { description: search },
+            { location: search },
+            { place_name: search }
+          ]
+        });
+      }
+      // if there are numbers of stars
+      if (avgRating) {
+        /* add query that selects all the posts whose avgRating is included in the avgRating array of
+        the ones specified by the user in the form */
+        dbQueries.push({ avgRating: { $in: avgRating } });
+      }
+      // if there is a base location and a distance
+      if (location) {
+        // find out the geo coordinates of the location
+        const response = await geocodeClient
+          .forwardGeocode({ query: location, limit: 1 })
+          .send();
+        const { coordinates } = response.body.features[0].geometry;
+        let { customDistance, distance } = distanceObj;
+        // check if a distance or a custom one was provided, otherwise use the default one 25km
+        if (customDistance) distance = customDistance;
+        else if (!distance) distance = 10;
+        // convert the distance to meters from kilometers
+        distance *= 1000;
+        /* find all the carpgrounds in the nearby (all the campgrounds far from the referement point at the most distance) */
+        dbQueries.push({
+          geometry: {
+            $near: {
+              $geometry: {
+                type: "Point",
+                coordinates
+              },
+              $maxDistance: distance
+            }
+          }
+        });
+      }
+      // if there is a price
+      if (price) {
+        /* build 2 queries if the max is defined select all the campground with that max price if the min is defined
+         do the same but with the all the campgrounds with that minimum price SO WE CAN ALSO IMPLEMENT PRICE INTERVALS */
+        if (price.min) dbQueries.push({ price: { $gte: price.min } });
+        if (price.max) dbQueries.push({ price: { $lte: price.max } });
+      }
+      // if there are features wanted
+      if (features) {
+        /* select all the campgrounds with the specified features included
+        use the . notation to get access to nested objs */
+        let { freeWiFi, hasSwimmingPool } = features;
+        freeWiFi = eval(freeWiFi);
+        hasSwimmingPool = eval(hasSwimmingPool);
+        if (freeWiFi)
+          dbQueries.push({
+            "features.freeWiFi": freeWiFi
+          });
+        if (hasSwimmingPool)
+          dbQueries.push({
+            "features.hasSwimingPool": hasSwimmingPool
+          });
+      }
+    }
+    // build the dbQuery object use undefined instead of {} cuz is simpler to handle in the ifs
+    res.locals.dbQuery = dbQueries.length ? { $and: dbQueries } : undefined;
+    // we want to conserve the form in the view of the results
+    res.locals.query = req.query;
+    // run the controller
     next();
   }
 };

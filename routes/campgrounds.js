@@ -24,12 +24,17 @@ const {
     destroyFormCookies,
     validateCampground,
     isLoggedIn,
-    checkCampground
+    checkCampground,
+    searchAndFilterCampgrounds
   } = require("../middleware/modelsMiddleware"),
   { asyncErrorHandler } = require("../middleware");
 
 // INDEX
-router.get("/", asyncErrorHandler(indexCampground));
+router.get(
+  "/",
+  asyncErrorHandler(searchAndFilterCampgrounds),
+  asyncErrorHandler(indexCampground)
+);
 
 // NEW
 router.get("/new", isLoggedIn, destroyFormCookies, newCampground);
