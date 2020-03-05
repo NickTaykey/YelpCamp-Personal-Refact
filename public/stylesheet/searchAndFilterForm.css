@@ -6,6 +6,11 @@ input[type="checkbox"] + label {
   margin-top: 15px;
 }
 
+#cleanLocation {
+  display: inline-block;
+  margin-top: 15px;
+}
+
 .Min {
   margin-right: 10px;
 }
