@@ -247,6 +247,8 @@ const middlewareOBJ = {
         let { freeWiFi, hasSwimmingPool, baths, carParking } = features;
         freeWiFi = eval(freeWiFi);
         hasSwimmingPool = eval(hasSwimmingPool);
+        baths = baths !== "undefined" ? baths : undefined;
+        carParking = carParking !== "undefined" ? carParking : undefined;
         if (freeWiFi)
           dbQueries.push({
             "features.freeWiFi": freeWiFi
@@ -255,7 +257,6 @@ const middlewareOBJ = {
           dbQueries.push({
             "features.hasSwimingPool": hasSwimmingPool
           });
-        // eval(require("locus"));
         if (baths) dbQueries.push({ "features.baths": baths });
         if (carParking) dbQueries.push({ "features.carParkings": carParking });
       }
