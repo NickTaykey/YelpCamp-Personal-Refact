@@ -104,17 +104,17 @@
     <section>
       <h4>Baths</h4>
       <select name="features[baths]" class="form-control">
-        <option value="basic">no shower</option>
-        <option value="covered">shower</option>
-        <option value="withParkers">shower and bath tub</option>
+        <option value="no shower" <%= query.features && query.features.baths==="no shower" ? "selected" : "" %> >no shower</option>
+        <option value="shower" <%= query.features && query.features.baths==="shower" ? "selected" : "" %> >shower</option>
+        <option value="shower and bath tub" <%= query.features && query.features.baths==="shower and bath tub" ? "selected" : "" %> >shower and bath tub</option>
       </select>
     </section>
     <section>
       <h4>Car Parkings</h4>
       <select name="features[carParking]" class="form-control">
-        <option value="basic">basic parking</option>
-        <option value="covered">covered parking</option>
-        <option value="withParkers">with parkers</option>
+        <option value="basic" <%= query.features && query.features.carParking==="basic" ? "selected" : "" %> >basic parking</option>
+        <option value="covered" <%= query.features && query.features.carParking==="covered" ? "selected" : "" %> >covered parking</option>
+        <option value="with parkers" <%= query.features && query.features.carParking==="with parkers" ? "selected" : "" %> >with parkers</option>
       </select>
     </section>
   </fieldset>

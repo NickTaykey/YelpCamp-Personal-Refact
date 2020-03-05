@@ -244,7 +244,7 @@ const middlewareOBJ = {
       if (features) {
         /* select all the campgrounds with the specified features included
         use the . notation to get access to nested objs */
-        let { freeWiFi, hasSwimmingPool } = features;
+        let { freeWiFi, hasSwimmingPool, baths, carParking } = features;
         freeWiFi = eval(freeWiFi);
         hasSwimmingPool = eval(hasSwimmingPool);
         if (freeWiFi)
@@ -255,6 +255,9 @@ const middlewareOBJ = {
           dbQueries.push({
             "features.hasSwimingPool": hasSwimmingPool
           });
+        // eval(require("locus"));
+        if (baths) dbQueries.push({ "features.baths": baths });
+        if (carParking) dbQueries.push({ "features.carParkings": carParking });
       }
     }
     // build the dbQuery object use undefined instead of {} cuz is simpler to handle in the ifs
