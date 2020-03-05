@@ -264,6 +264,14 @@ const middlewareOBJ = {
     res.locals.dbQuery = dbQueries.length ? { $and: dbQueries } : undefined;
     // we want to conserve the form in the view of the results
     res.locals.query = req.query;
+    // GENERATE THE PAGINATELINK URL
+    // remove page from keys
+    keys.splice(keys.indexOf("page"), 1);
+    // if no querystring use ? as delimiter of the querystring (just started) if querystring use & as delimiter (alerdy started)
+    const delimiter = keys.length ? "&" : "?";
+    // build the url (remove page, re-add page properly) the url is always the one of the former request
+    res.locals.paginateLink =
+      req.originalUrl.replace(/(\?|\&)page=\d+/g, "") + `${delimiter}page=`;
     // run the controller
     next();
   }
