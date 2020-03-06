@@ -35,14 +35,20 @@
   <fieldset class="form-group">
     <legend>Location</legend>
     <label for="location">Location: </label>
-    <input
-      type="text"
-      class="form-control"
-      placeholder="base location"
-      name="location"
-      id="location"
-      value="<%= query.location ? query.location : '' %>"
-    />
+    <div class="input-group" style="display: <%= typeof query.location==='object' ? 'none' : 'table' %>;">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="base location"
+        name="location"
+        id="location"
+        value="<%= query.location ? `[${query.location}]` : '' %>"
+      />
+      <span class="input-group-btn">
+        <a class="btn btn-primary" href="#" id="useMyLocation">My Location</a>
+      </span>
+    </div>
+    <p id="geolocationStatus"><%= typeof query.location==="object" ? "geolocation successfully completed!" : "" %></p>
     <br />
     <input type="radio" name="distanceObj[distance]" value="10" id="10km" <%=
     query.distanceObj && !query.distanceObj.customDistance &&

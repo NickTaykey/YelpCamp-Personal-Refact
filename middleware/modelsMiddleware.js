@@ -209,11 +209,16 @@ const middlewareOBJ = {
       }
       // if there is a base location and a distance
       if (location) {
-        // find out the geo coordinates of the location
-        const response = await geocodeClient
-          .forwardGeocode({ query: location, limit: 1 })
-          .send();
-        const { coordinates } = response.body.features[0].geometry;
+        let coordinates;
+        try {
+          coordinates = JSON.parse(location);
+          req.query.location = coordinates;
+        } catch (e) {
+          const response = await geocodeClient
+            .forwardGeocode({ query: location, limit: 1 })
+            .send();
+          coordinates = response.body.features[0].geometry.coordinates;
+        }
         let { customDistance, distance } = distanceObj;
         // check if a distance or a custom one was provided, otherwise use the default one 25km
         if (customDistance) distance = customDistance;
