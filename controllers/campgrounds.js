@@ -10,8 +10,7 @@ const Campground = require("../models/campground"),
 module.exports = {
   indexCampground: async (req, res, next) => {
     // use the query provided by searchAndFilter middleware to retrive the campgrounds from the DB
-    const { dbQuery, query } = res.locals;
-    const { page } = req.query;
+    const { dbQuery } = res.locals;
     let campgrounds = await Campground.paginate(dbQuery, {
       limit: 8,
       page: req.query.page || 1,
