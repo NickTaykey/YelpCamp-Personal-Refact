@@ -38,6 +38,41 @@
       </div>
       <div class="form-group">
         <input
+          class="newCampgroundCheckbox"
+          type="checkbox"
+          name="freeWiFi"
+          id="wifi"
+          value="true"
+        />
+        <label for="wifi">Free Wi-Fi</label>
+        <input
+          class="newCampgroundCheckbox"
+          type="checkbox"
+          name="hasSwimingPool"
+          id="swimingPool"
+          value="true"
+        />
+        <label for="swimingPool">Has Swiming pool</label>
+      </div>
+      <div class="form-group">
+        <label for="baths">Type of baths:</label>
+        <select name="baths" id="baths" class="form-control">
+          <option value="no shower">no shower</option>
+          <option value="shower">shower</option>
+          <option value="shower and bath tub">shower and bath tub</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="carParkings">Type of car parkings</label>
+        <select name="carParkings" id="carParkings" class="form-control">
+          <option value="basic">basic</option>
+          <option value="covered">covered</option>
+          <option value="with parkers">with parkers</option>
+        </select>
+      </div>
+      <br />
+      <div class="form-group">
+        <input
           class="form-control"
           type="number"
           name="price"
@@ -53,7 +88,7 @@
           name="description"
           id=""
           cols="30"
-          rows="10"
+          rows="1"
           placeholder="description ... "
         >
 <% if(description) { %><%= description %><% } %></textarea

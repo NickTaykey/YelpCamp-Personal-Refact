@@ -40,7 +40,16 @@ module.exports = {
     res.render("campgrounds/show", { campground, floorRating });
   },
   createCampground: async (req, res, next) => {
-    let { name, description, price, location } = req.body;
+    let {
+      name,
+      description,
+      price,
+      location,
+      baths,
+      freeWiFi,
+      carParkings,
+      hasSwimingPool
+    } = req.body;
     let newCampGround = {
       name,
       description,
@@ -48,7 +57,13 @@ module.exports = {
       location,
       geometry: {},
       propeties: {},
-      author: req.user._id
+      author: req.user._id,
+      features: {
+        baths,
+        freeWiFi: eval(freeWiFi) ? true : false,
+        carParkings,
+        hasSwimingPool: eval(hasSwimingPool) ? true : false
+      }
     };
     newCampGround.images = [];
     for (const img of req.files) {
@@ -107,6 +122,12 @@ module.exports = {
       campground.price = bodyCampground.price;
       campground.description = bodyCampground.description;
       campground.location = bodyCampground.location;
+      campground.features = {
+        baths,
+        freeWiFi: eval(bodyCampground.freeWiFi) ? true : false,
+        carParkings,
+        hasSwimingPool: eval(bodyCampground.hasSwimingPool) ? true : false
+      };
       campground.geometry.coordinates =
         response.body.features[0].geometry.coordinates;
       campground.placeName = response.body.features[0].place_name;
@@ -115,6 +136,12 @@ module.exports = {
     ["name", "price", "description"].forEach(
       n => (campground[n] = bodyCampground[n])
     );
+    campground.features = {
+      baths: bodyCampground.baths,
+      freeWiFi: eval(bodyCampground.freeWiFi) ? true : false,
+      carParkings: bodyCampground.carParkings,
+      hasSwimingPool: eval(bodyCampground.hasSwimingPool) ? true : false
+    };
     await campground.save();
     req.session.success = "Campground successfully updated";
     res.redirect(`/campgrounds/${req.params.id}`);

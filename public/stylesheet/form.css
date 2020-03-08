@@ -13,10 +13,14 @@ form {
   margin-top: 15px;
   margin-right: 45px;
 }
-input[type="checkbox"] {
+input[type="checkbox"]:not(.newCampgroundCheckbox) {
   display: inline-block;
   width: 20px;
   height: 20px;
+}
+
+input[type="checkbox"].newCampgroundCheckbox + label {
+  margin-right: 10px;
 }
 
 /* AUTH FORMS CSS */

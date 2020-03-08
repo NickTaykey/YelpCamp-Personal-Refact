@@ -51,6 +51,34 @@
         %>checked<% } %> /> <% }) %>
       </div>
       <div class="form-group">
+        <input class="newCampgroundCheckbox" type="checkbox" name="campground[freeWiFi]"
+        id="wifi" value="true" <%= campground.features.freeWiFi ? "checked" : ""
+        %> />
+        <label for="wifi">Free Wi-Fi</label>
+        <input class="newCampgroundCheckbox" type="checkbox"
+        name="campground[hasSwimingPool]" id="swimingPool" value="true" <%=
+        campground.features.hasSwimingPool ? "checked" : "" %> />
+        <label for="swimingPool">Has Swiming pool</label>
+      </div>
+      <div class="form-group">
+        <label for="baths">Type of baths:</label>
+        <select name="campground[baths]" id="baths" class="form-control">
+          <option value="no shower" <%= campground.features.baths==="no shower" ? "selected" : "" %>>no shower</option>
+          <option value="shower" <%= campground.features.baths==="shower" ? "selected" : "" %>>shower</option>
+          <option value="shower and bath tub" <%= campground.features.baths==="shower and bath tub" ? "selected" : "" %>>shower and bath tub</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="carParkings">Type of car parkings</label>
+        <select name="campground[carParkings]" id="carParkings" class="form-control">
+          <option value="basic" <%= campground.features.carParkings==="basic" ? "selected" : "" %>>basic</option>
+          <option value="covered" <%= campground.features.carParkings==="covered" ? "selected" : "" %>>covered</option>
+          <option value="with parkers" <%= campground.features.carParkings==="with parkers" ? "selected" : "" %>>with parkers</option>
+        </select>
+      </div>
+      <br />
+
+      <div class="form-group">
         <input
           class="form-control"
           type="number"
