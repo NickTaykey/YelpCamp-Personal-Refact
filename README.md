@@ -1,3 +1,3 @@
-# YelpCamp_W_cluster_maps_and_ratings
+# YelpCamp_W_search_and_filters
 
-my custom version of YelpCamp with cluster maps for displaying all the campgrounds in landing and index plus star rating
+implement a serch / filtering system for campgrounds 
