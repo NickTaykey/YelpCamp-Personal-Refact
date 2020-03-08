@@ -103,6 +103,10 @@ const middlewareOBJ = {
   destroyFormCookies(req, res, next) {
     const delImgs = [];
     formFields.forEach(n => res.clearCookie(n));
+    res.clearCookie("freeWiFi");
+    res.clearCookie("baths");
+    res.clearCookie("carParkings");
+    res.clearCookie("hasSwimingPool");
     if (req.params.length)
       for (let i = 0; i < 4; i++) {
         if (req.cookies[`deleteImg${i}`]) {
@@ -110,6 +114,16 @@ const middlewareOBJ = {
           delImgs.push(req.cookies[`deleteImg${i}`]);
         }
       }
+    res.locals.baths = req.cookies.baths ? req.cookies.baths : undefined;
+    res.locals.freeWiFi = req.cookies.freeWiFi
+      ? req.cookies.freeWiFi
+      : undefined;
+    res.locals.carParkings = req.cookies.carParkings
+      ? req.cookies.carParkings
+      : undefined;
+    res.locals.hasSwimingPool = req.cookies.hasSwimingPool
+      ? req.cookies.hasSwimingPool
+      : undefined;
     res.locals.delImgs = delImgs;
     formFields.forEach(n => (res.locals[n] = req.cookies[n]));
     next();
@@ -138,6 +152,16 @@ const middlewareOBJ = {
     formFields.forEach(n => {
       if (fields[n]) res.cookie(n, fields[n]);
     });
+    res.cookie("freeWiFi", campground.freeWiFi ? campground.freeWiFi : "");
+    res.cookie("baths", campground.baths ? campground.baths : "");
+    res.cookie(
+      "carParkings",
+      campground.carParkings ? campground.carParkings : ""
+    );
+    res.cookie(
+      "hasSwimingPool",
+      campground.hasSwimingPool ? campground.hasSwimingPool : ""
+    );
     req.session.error = msg;
     res.redirect("back");
   },

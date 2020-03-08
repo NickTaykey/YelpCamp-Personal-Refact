@@ -37,37 +37,28 @@
         />
       </div>
       <div class="form-group">
-        <input
-          class="newCampgroundCheckbox"
-          type="checkbox"
-          name="freeWiFi"
-          id="wifi"
-          value="true"
-        />
+        <input class="newCampgroundCheckbox" type="checkbox" name="freeWiFi"
+        id="wifi" value="true" <%= freeWiFi ? "checked" : "" %> />
         <label for="wifi">Free Wi-Fi</label>
-        <input
-          class="newCampgroundCheckbox"
-          type="checkbox"
-          name="hasSwimingPool"
-          id="swimingPool"
-          value="true"
-        />
+        <input class="newCampgroundCheckbox" type="checkbox"
+        name="hasSwimingPool" id="swimingPool" value="true" <%= hasSwimingPool ?
+        "checked" : "" %> />
         <label for="swimingPool">Has Swiming pool</label>
       </div>
       <div class="form-group">
         <label for="baths">Type of baths:</label>
         <select name="baths" id="baths" class="form-control">
-          <option value="no shower">no shower</option>
-          <option value="shower">shower</option>
-          <option value="shower and bath tub">shower and bath tub</option>
+          <option value="no shower" <%= baths==="no shower" ? "selected" : "" %> >no shower</option>
+          <option value="shower" <%= baths==="shower" ? "selected" : "" %> >shower</option>
+          <option value="shower and bath tub" <%= baths==="shower and bath tub" ? "selected" : "" %> >shower and bath tub</option>
         </select>
       </div>
       <div class="form-group">
         <label for="carParkings">Type of car parkings</label>
         <select name="carParkings" id="carParkings" class="form-control">
-          <option value="basic">basic</option>
-          <option value="covered">covered</option>
-          <option value="with parkers">with parkers</option>
+          <option value="basic" <%= carParkings==="basic" ? "selected" : "" %>>basic</option>
+          <option value="covered" <%= carParkings==="covered" ? "selected" : "" %>>covered</option>
+          <option value="with parkers" <%= carParkings==="with parkers" ? "selected" : "" %>>with parkers</option>
         </select>
       </div>
       <br />
